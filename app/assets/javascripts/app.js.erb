@@ -1,0 +1,11 @@
+var app = angular.module("TypingGame",["ngRoute","ngResource"])
+  .config(function($routeProvider) {
+    $routeProvider
+      .when("/", {
+        templateUrl: "<%= asset_path('templates/game_template.html') %>",
+        controller: "GameCtrl"
+      })
+      .otherwise({
+        redirectTo: "/"
+      });
+  });

@@ -1,0 +1,18 @@
+app.directive("gameDirective", function() {
+  return {
+    templateUrl: "<%= asset_path('templates/directives/game_template.html') %>",
+    link: function(scope, ele, attr) {
+      scope.log = [];
+      ele.bind("keyup", function(evt){
+        console.log(evt.keyCode);
+        //check if spacebar is pressed
+        if (evt.keyCode == 32) {
+          scope.log.push(scope.ans);
+          scope.ans = "";
+        }
+        
+        scope.$digest();
+      });  
+    }
+  }
+});

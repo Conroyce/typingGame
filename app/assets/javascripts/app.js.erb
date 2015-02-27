@@ -2,7 +2,7 @@ var app = angular.module("TypingGame",["ngRoute","ngResource"])
   .config(function($routeProvider) {
     $routeProvider
       .when("/", {
-        templateUrl: "<%= asset_path('templates/game_template.html') %>",
+        templateUrl: "<%= asset_path('templates/views/game.html') %>",
         controller: "GameCtrl"
       })
       .otherwise({

@@ -4,26 +4,39 @@ app.directive("gameDirective", function() {
     link: function(scope, ele, attr) {
       scope.data = 'A short story is a brief work of literature, usually written in narrative prose. Emerging from earlier oral storytelling traditions in the 17th century, the short story has grown to encompass a body of work so diverse as to defy easy characterization. At its most prototypical the short story features a small cast of named characters, and focuses on a self-contained incident with the intent of evoking a "single effect" or mood';
       scope.log = [];
-      var wordsLeft = ["A","short","story"] //scope.data.split(" ");
+      var wordsLeft = scope.data.split(" ");
       var current = wordsLeft.shift();
+      scope.count = 0;
+      var ending = function() {
+        scope.count++;
+        scope.data = "Times up! You finished with a score of " + scope.count;
+      }
 
       ele.bind("keyup", function(evt){
         console.log(evt.keyCode, current);
         //check if spacebar is pressed
         if (evt.keyCode == 32) {
+          //if word entered is correct and its the last word
           if (current === scope.ans && wordsLeft.length === 0) {
-            scope.data = "The End!!";
+            // scope.data = "Times Up! You Finished with a score of " + scope.count++;
             scope.log.push(scope.ans); 
-            scope.ans = "";     
+            scope.ans = ""; 
+          //if word entered is correct      
           } else if (current === scope.ans) {         
             scope.log.push(scope.ans);
             scope.ans = "";
             current = wordsLeft.shift();
+            scope.count++;
+          } else {
+
           }
-        }
-        
+        }       
         scope.$digest();
       });  
+
+      setTimeout(ending, 10000)
+            
+
     }
   }
 });

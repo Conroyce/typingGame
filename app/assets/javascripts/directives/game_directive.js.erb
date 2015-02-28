@@ -2,16 +2,25 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
   return {
     templateUrl: "<%= asset_path('templates/directives/game_template.html') %>",
     link: function(scope, ele, attr) {
-      scope.data = 'A short story is a brief work of literature, usually written in narrative prose. Emerging from earlier oral storytelling traditions in the 17th century, the short story has grown to encompass a body of work so diverse as to defy easy characterization. At its most prototypical the short story features a small cast of named characters, and focuses on a self-contained incident with the intent of evoking a "single effect" or mood';
-      scope.count = 0;
-      scope.log = [];
-      var wordsLeft = scope.data.split(" ");
+      var data = 'A short story is a brief work of literature, usually written in narrative prose. Emerging from earlier oral storytelling traditions in the 17th century, the short story has grown to encompass a body of work so diverse as to defy easy characterization. At its most prototypical the short story features a small cast of named characters, and focuses on a self-contained incident with the intent of evoking a "single effect" or mood';
+      var wordsLeft = data.split(" ");
       var current = wordsLeft.shift();
+      scope.log = [];
+      scope.dataCompleted = scope.log.join(" ");
+      console.log(scope.dataCompleted);
+      scope.dataRemain = wordsLeft.join(" ");
+      scope.dataCurrent = current[0];
+      scope.count = 0;
       console.log(wordsLeft[scope.count]);
       scope.gameStarted = false;
+      scope.disable = true;
+      scope.cur = false;
+      scope.fail = false;
 
       var ending = function() {
         scope.data = "Times up! You finished with a score of " + scope.count;
+        scope.ans = "";
+        scope.disable = true;
       }
 
       var timeGame = function() {
@@ -28,37 +37,43 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
             //stop countdown, start timer for typing game
             $interval.cancel(dec);
             scope.countDown = "Go!";
+            scope.disable = false;
+            scope.cur = true;
+            scope.$apply();
+            ele[0].querySelector('.text-type').focus();
             $timeout(ending, 10000);
           } else {
             scope.countDown--;
           }
-        },1000);
-        
-        
-        
+        },1000);       
       };
 
       ele.bind("keyup", function(evt){
         //check if spacebar is pressed
         if (evt.keyCode == 32) {
           //if word entered is correct and its the last word
-          if (current === scope.ans && wordsLeft.length === 0) {
-            // scope.data = "Times Up! You Finished with a score of " + scope.count++;
-            scope.log.push(scope.ans); 
-            scope.ans = ""; 
+          // if (current === scope.ans && wordsLeft.length === 0) {
+          //   scope.log.push(scope.ans); 
+          //   scope.ans = ""; 
+          // } 
           //if word entered is correct      
-          } else if (current === scope.ans) {         
+          if (current === scope.ans) {           
             scope.log.push(scope.ans);
+            scope.dataCompleted = scope.log.join(" ");
             scope.ans = "";
             current = wordsLeft.shift();
+            scope.dataCurrent = current;
             scope.count++;
+            scope.cur = true;
+            scope.fail = false;
+            console.log("current: ", current,"scope.log: ", scope.log, "scope.dataCompleted: ", scope.dataCompleted)
           } else {
-
+            scope.fail = true;
+            scope.cur = false;
           }
-        }       
-        scope.$digest();
+          scope.$digest();
+        }         
       });       
-
     }
   }
 }]);

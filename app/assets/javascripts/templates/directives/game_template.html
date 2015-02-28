@@ -1,4 +1,5 @@
 <h3>Words Completed: {{count}}</h3>
 <p>{{data}}</p>
-<p>{{log}}</p>
-<input type="text" ng-model="ans">
+<p ng-show="gameStarted">{{countDown}}</p>
+<input ng-hide="gameStarted" type="button" ng-click="startGame()" value="Start Game">
+<input ng-show="gameStarted" type="text" ng-model="ans">

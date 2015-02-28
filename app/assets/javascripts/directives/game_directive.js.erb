@@ -1,19 +1,44 @@
-app.directive("gameDirective", function() {
+app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $interval) {
   return {
     templateUrl: "<%= asset_path('templates/directives/game_template.html') %>",
     link: function(scope, ele, attr) {
       scope.data = 'A short story is a brief work of literature, usually written in narrative prose. Emerging from earlier oral storytelling traditions in the 17th century, the short story has grown to encompass a body of work so diverse as to defy easy characterization. At its most prototypical the short story features a small cast of named characters, and focuses on a self-contained incident with the intent of evoking a "single effect" or mood';
+      scope.count = 0;
       scope.log = [];
       var wordsLeft = scope.data.split(" ");
       var current = wordsLeft.shift();
-      scope.count = 0;
+      console.log(wordsLeft[scope.count]);
+      scope.gameStarted = false;
+
       var ending = function() {
-        scope.count++;
         scope.data = "Times up! You finished with a score of " + scope.count;
       }
 
+      var timeGame = function() {
+        $timeout(ending, 10000);
+      }
+
+      scope.startGame = function() {
+        scope.gameStarted = true;
+        scope.countDown = 5;
+        //start countdown
+        var dec = $interval(function() { 
+          //if we reach 1
+          if (scope.countDown === 1) {
+            //stop countdown, start timer for typing game
+            $interval.cancel(dec);
+            scope.countDown = "Go!";
+            $timeout(ending, 10000);
+          } else {
+            scope.countDown--;
+          }
+        },1000);
+        
+        
+        
+      };
+
       ele.bind("keyup", function(evt){
-        console.log(evt.keyCode, current);
         //check if spacebar is pressed
         if (evt.keyCode == 32) {
           //if word entered is correct and its the last word
@@ -32,11 +57,8 @@ app.directive("gameDirective", function() {
           }
         }       
         scope.$digest();
-      });  
-
-      setTimeout(ending, 10000)
-            
+      });       
 
     }
   }
-});
+}]);

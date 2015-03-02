@@ -4,31 +4,44 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
     link: function(scope, ele, attr) {
       var data = 'A short story is a brief work of literature, usually written in narrative prose. Emerging from earlier oral storytelling traditions in the 17th century, the short story has grown to encompass a body of work so diverse as to defy easy characterization. At its most prototypical the short story features a small cast of named characters, and focuses on a self-contained incident with the intent of evoking a "single effect" or mood';
       var wordsLeft = data.split(" ");
-      var current = wordsLeft.shift();
-      scope.log = [];
-      scope.dataCompleted = scope.log.join(" ");
-      console.log(scope.dataCompleted);
-      scope.dataRemain = wordsLeft.join(" ");
-      scope.dataCurrent = current[0];
-      scope.count = 0;
-      console.log(wordsLeft[scope.count]);
-      scope.gameStarted = false;
-      scope.disable = true;
-      scope.cur = false;
-      scope.fail = false;
+      var current;
+      
+      var updateData = function() {
+        scope.dataCompleted = scope.log.join(" ");
+        current = wordsLeft.shift();
+        scope.dataRemain = wordsLeft.join(" ");
+        scope.dataCurrent = current;
+      };
+
+      scope.createDisplay = function() {
+        scope.log = [];      
+        scope.count = 0;
+        scope.gameStarted = false;
+        scope.disable = true;
+        scope.gameOver = false;
+        scope.gameDisplay = true;
+        updateData();
+      };        
+
+      var textDisplay = function(cur, fail) {
+        scope.cur = cur;
+        scope.fail = fail;
+      };      
 
       var ending = function() {
-        scope.dataCompleted = "";
-        scope.dataCurrent = "";
-        scope.cur = false;
-        scope.dataRemain = "Times up! You finished with a score of " + scope.count;
         scope.ans = "";
         scope.disable = true;
-      }
+        scope.gameOver = true;
+        scope.gameDisplay = false;
+        // scope.dataRemain = "Times up! You finished with a score of " + scope.count;
+        textDisplay(false,false);
+        wordsLeft = data.split(" ");
+        // createDisplay();
+      };
 
       var timeGame = function() {
         $timeout(ending, 10000);
-      }
+      };
 
       var clearStartMes = function() {
         $timeout(function() {
@@ -48,7 +61,7 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
             scope.countDown = "Go!";
             clearStartMes();
             scope.disable = false;
-            scope.cur = true;
+            textDisplay(true,false);
             scope.$apply();
             ele[0].querySelector('.text-type').focus();
             $timeout(ending, 10000);
@@ -63,22 +76,20 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
         if (evt.keyCode == 32) {      
           if (current === scope.ans) {           
             scope.log.push(scope.ans);
-            scope.dataCompleted = scope.log.join(" ");
+            updateData();
             scope.ans = "";
-            current = wordsLeft.shift();
-            scope.dataRemain = wordsLeft.join(" ");
-            scope.dataCurrent = current;
             scope.count++;
-            scope.cur = true;
-            scope.fail = false;
+            textDisplay(true,false);
             console.log("current: ", current,"scope.log: ", scope.log, "scope.dataCompleted: ", scope.dataCompleted)
           } else {
-            scope.fail = true;
-            scope.cur = false;
+            textDisplay(false,true);
           }
           scope.$digest();
         }         
-      });       
+      }); 
+
+      scope.createDisplay();
+      textDisplay(false,false);      
     }
   }
 }]);

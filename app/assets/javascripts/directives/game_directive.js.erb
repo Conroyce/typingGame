@@ -4,8 +4,25 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
     link: function(scope, ele, attr) {
       var data = 'A short story is a brief work of literature, usually written in narrative prose. Emerging from earlier oral storytelling traditions in the 17th century, the short story has grown to encompass a body of work so diverse as to defy easy characterization. At its most prototypical the short story features a small cast of named characters, and focuses on a self-contained incident with the intent of evoking a "single effect" or mood';
       var wordsLeft = data.split(" ");
-      var current;
+      var current,
+          timer;
+
+      var calcWPM = function(words,time) {
+        var adjust = 60/time;
+        scope.wpm = words * adjust;
+      };
       
+      var startTimer = function() {
+        var start = new Date();
+        timer = $interval(function() {
+          scope.time = (new Date - start) / 1000;
+        });
+      };
+
+      var stopTimer = function() {
+        $interval.cancel(timer);
+      }
+
       var updateData = function() {
         current = wordsLeft.shift();
         scope.dataCompleted = scope.log.join(" ");
@@ -20,6 +37,7 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
         scope.disable = true;
         scope.gameOver = false;
         scope.gameDisplay = true;
+        scope.wpm = "";
         updateData();
       };        
 
@@ -29,12 +47,15 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
       };      
 
       var ending = function() {
+        stopTimer();
         scope.ans = "";
         scope.disable = true;
         scope.gameOver = true;
         scope.gameDisplay = false;
         textDisplay(false,false);
+        calcWPM(scope.count,10)
         wordsLeft = data.split(" ");
+
       };
 
       var timeGame = function() {
@@ -60,6 +81,7 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
             clearStartMes();
             scope.disable = false;
             textDisplay(true,false);
+            startTimer();
             scope.$apply();
             ele[0].querySelector('.text-type').focus();
             $timeout(ending, 10000);

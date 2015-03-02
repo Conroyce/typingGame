@@ -1,5 +1,7 @@
-<h3>Words Completed: {{count}}</h3>
-<p class="data">{{dataCompleted}} <span ng-class="{cur: cur, fail: fail}">{{dataCurrent}}</span> {{dataRemain}}</p>
-<p ng-show="gameStarted">{{countDown}}</p>
-<input ng-hide="gameStarted" type="button" ng-click="startGame()" value="Start Game">
-<input class="text-type" ng-show="gameStarted" type="text" ng-model="ans" ng-disabled="disable">
+<div class="container">
+  <h3>Words Completed: {{count}}</h3>
+  <p class="data">{{dataCompleted}} <span ng-class="{cur: cur, fail: fail}">{{dataCurrent}}</span> {{dataRemain}}</p>
+  <p ng-show="gameStarted">{{countDown}}</p>
+  <input ng-hide="gameStarted" type="button" ng-click="startGame()" value="Start Game">
+  <input class="text-type" ng-show="gameStarted" type="text" ng-model="ans" ng-disabled="disable">
+</div>

@@ -18,7 +18,10 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
       scope.fail = false;
 
       var ending = function() {
-        scope.data = "Times up! You finished with a score of " + scope.count;
+        scope.dataCompleted = "";
+        scope.dataCurrent = "";
+        scope.cur = false;
+        scope.dataRemain = "Times up! You finished with a score of " + scope.count;
         scope.ans = "";
         scope.disable = true;
       }
@@ -26,6 +29,12 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
       var timeGame = function() {
         $timeout(ending, 10000);
       }
+
+      var clearStartMes = function() {
+        $timeout(function() {
+          scope.countDown = "";
+        }, 1000)
+      };
 
       scope.startGame = function() {
         scope.gameStarted = true;
@@ -37,6 +46,7 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
             //stop countdown, start timer for typing game
             $interval.cancel(dec);
             scope.countDown = "Go!";
+            clearStartMes();
             scope.disable = false;
             scope.cur = true;
             scope.$apply();
@@ -50,18 +60,13 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
 
       ele.bind("keyup", function(evt){
         //check if spacebar is pressed
-        if (evt.keyCode == 32) {
-          //if word entered is correct and its the last word
-          // if (current === scope.ans && wordsLeft.length === 0) {
-          //   scope.log.push(scope.ans); 
-          //   scope.ans = ""; 
-          // } 
-          //if word entered is correct      
+        if (evt.keyCode == 32) {      
           if (current === scope.ans) {           
             scope.log.push(scope.ans);
             scope.dataCompleted = scope.log.join(" ");
             scope.ans = "";
             current = wordsLeft.shift();
+            scope.dataRemain = wordsLeft.join(" ");
             scope.dataCurrent = current;
             scope.count++;
             scope.cur = true;

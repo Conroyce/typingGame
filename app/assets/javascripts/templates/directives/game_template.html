@@ -24,6 +24,10 @@
     </div>
   </div>
   <p ng-show="gameStarted">{{countDown}}</p>
-  <input ng-hide="gameStarted" type="button" ng-click="startGame()" value="Start Game">
-  <input class="text-type" ng-show="gameStarted" type="text" ng-model="ans" ng-disabled="disable">
+  <input class="btn btn-default" ng-hide="gameStarted" type="button" ng-click="startGame()" value="Start Game">
+  <div class="row">
+    <div class="col-xs-4">
+      <input ng-class="{cur: cur, fail: fail}" class="text-type form-control" ng-show="gameStarted" type="text" ng-model="ans" ng-disabled="disable">
+    </div>
+  </div>
 </div>

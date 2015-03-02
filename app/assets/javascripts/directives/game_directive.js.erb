@@ -7,8 +7,8 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
       var current;
       
       var updateData = function() {
-        scope.dataCompleted = scope.log.join(" ");
         current = wordsLeft.shift();
+        scope.dataCompleted = scope.log.join(" ");
         scope.dataRemain = wordsLeft.join(" ");
         scope.dataCurrent = current;
       };
@@ -33,10 +33,8 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
         scope.disable = true;
         scope.gameOver = true;
         scope.gameDisplay = false;
-        // scope.dataRemain = "Times up! You finished with a score of " + scope.count;
         textDisplay(false,false);
         wordsLeft = data.split(" ");
-        // createDisplay();
       };
 
       var timeGame = function() {

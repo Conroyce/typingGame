@@ -1,36 +1,45 @@
 <div class="container">
   <div class="row">
-    <img ng-style="transparency" class="roundEdge" src="http://lorempixel.com/700/400/">
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <h3>WPM: {{wpm}} Timer: {{time}}</h3>
+    <div class="col-xs-3">
     </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <p class="big-text" ng-show="gameDisplay">
-        {{dataCompleted}} 
-        <span ng-class="{cur: cur, fail: fail}">{{dataCurrent}}</span> 
-        {{dataRemain}}
-      </p>  
-    </div>
-  </div>  
-  <div class="row" ng-show="gameOver">
-    <div class="col-xs-6">      
-      <p class="big-text">
-        Times up! You Typed {{log.length}} words at a rate of {{wpm}} WPM and {{accuracy}}% Accuracy!
-      </p>
-    </div>
-    <div class="col-xs-6">
-      <p class="btn btn-default" ng-click="startAgain()">Try Again</p>
-    </div>
-  </div>
-  <p ng-show="gameStarted">{{countDown}}</p>
-  <input class="btn btn-default" ng-hide="gameStarted" type="button" ng-click="startGame()" value="Start Game">
-  <div class="row">
-    <div class="col-xs-4">
-      <input ng-class="{cur: cur, fail: fail}" class="text-type bigger-text form-control" ng-show="gameStarted" type="text" ng-model="ans" ng-disabled="disable">
-    </div>
-  </div>
+    <div class="col-xs-6 div-relative">
+      <div class="row">
+        <div class="col-xs-12">
+          <img class="roundEdge" src="http://lorempixel.com/600/400/">
+          <div ng-style="transparency"></div>
+        </div>
+      </div>       
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>WPM: {{wpm}} Timer: {{time}}</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <p class="big-text" ng-show="gameDisplay">
+            {{dataCompleted}} 
+            <span ng-class="{cur: cur, fail: fail}">{{dataCurrent}}</span> 
+            {{dataRemain}}
+          </p>  
+        </div>
+      </div>  
+      <div class="row" ng-show="gameOver">
+        <div class="col-xs-6">      
+          <p class="big-text">
+            Times up! You Typed {{log.length}} words at a rate of {{wpm}} WPM and {{accuracy}}% Accuracy!
+          </p>
+        </div>
+        <div class="col-xs-6">
+          <p class="btn btn-default" ng-click="startAgain()">Try Again</p>
+        </div>
+      </div>
+      <p ng-show="gameStarted">{{countDown}}</p>
+      <input class="btn btn-default" ng-hide="gameStarted" type="button" ng-click="startGame()" value="Start Game">
+      <div class="row">
+        <div class="col-xs-4">
+          <input ng-class="{cur: cur, fail: fail}" class="text-type bigger-text form-control" ng-show="gameStarted" type="text" ng-model="ans" ng-disabled="disable">
+        </div>
+      </div>
+    </div>   
+  </div>    
 </div>

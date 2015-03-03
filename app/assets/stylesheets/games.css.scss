@@ -29,3 +29,17 @@
 .roundEdge {
   border-radius: 6px;
 }
+
+.div-relative {
+  position: relative;
+}
+
+.div-cover {
+  background-color: black;
+  width: 700px;
+  height: 400px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius:6px;
+}

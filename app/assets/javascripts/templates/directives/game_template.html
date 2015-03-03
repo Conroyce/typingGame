@@ -16,11 +16,11 @@
   <div class="row" ng-show="gameOver">
     <div class="col-xs-6">      
       <p>
-        Times up! You Typed at a rate of {{wpm}} WPM!
+        Times up! You Typed {{log.length}} words at a rate of {{wpm}} WPM!
       </p>
     </div>
     <div class="col-xs-6">
-      <p class="btn btn-default" ng-click="createDisplay()">Try Again</p>
+      <p class="btn btn-default" ng-click="startAgain()">Try Again</p>
     </div>
   </div>
   <p ng-show="gameStarted">{{countDown}}</p>

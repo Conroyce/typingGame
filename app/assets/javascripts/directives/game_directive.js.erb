@@ -1,119 +1,125 @@
-app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $interval) {
+app.directive("gameDirective", ["$timeout", "$interval", "$http", function($timeout, $interval, $http) {
   return {
     templateUrl: "<%= asset_path('templates/directives/game_template.html') %>",
     link: function(scope, ele, attr) {
-      var data = 'A short story is a brief work of literature, usually written in narrative prose.' //Emerging from earlier oral storytelling traditions in the 17th century, the short story has grown to encompass a body of work so diverse as to defy easy characterization. At its most prototypical the short story features a small cast of named characters, and focuses on a self-contained incident with the intent of evoking a "single effect" or mood.';
-      var wordsLeft = data.split(" ");
-      var total = wordsLeft.length - 1;
-      var current,
-          timer,
-          start;
+      scope.startAgain = function(){
+        $http.get("http://numbersapi.com/random/trivia").success(function(data) {
+        
+          var wordsLeft = data.split(" ");
+          var total = wordsLeft.length - 1;
+          var current,
+              timer,
+              start;
 
-      var calcWPM = function(words,time) {
-        var adjust = 60/time;
-        scope.wpm = Math.ceil(words * adjust);
-      };
-      
-      var startTimer = function() {
-        start = new Date();
-        timer = $interval(function() {
-          scope.time = (new Date - start) / 1000;
-        });
-      };
+          var calcWPM = function(words,time) {
+            var adjust = 60/time;
+            scope.wpm = Math.ceil(words * adjust);
+          };
+          
+          var startTimer = function() {
+            start = new Date();
+            timer = $interval(function() {
+              scope.time = (new Date - start) / 1000;
+            });
+          };
 
-      var stopTimer = function() {
-        $interval.cancel(timer);
-      }
-
-      var updateData = function() {
-        current = wordsLeft.shift();
-        scope.dataCompleted = scope.log.join(" ");
-        scope.dataRemain = wordsLeft.join(" ");
-        scope.dataCurrent = current;
-      };
-
-      scope.createDisplay = function() {
-        scope.log = [];      
-        scope.count = 0;
-        scope.time = 0;
-        scope.wpm = 0;
-        scope.gameStarted = false;
-        scope.disable = true;
-        scope.gameOver = false;
-        scope.gameDisplay = true;
-        updateData();
-      };        
-
-      var textDisplay = function(cur, fail) {
-        scope.cur = cur;
-        scope.fail = fail;
-      };      
-
-      var ending = function() {
-        var totalTime = (new Date - start)/1000;
-        stopTimer();
-        scope.ans = "";
-        scope.disable = true;
-        scope.gameOver = true;
-        scope.gameDisplay = false;
-        textDisplay(false,false);
-        console.log(totalTime);
-        calcWPM(scope.count,scope.time)
-        wordsLeft = data.split(" ");
-
-      };
-
-      var clearStartMes = function() {
-        $timeout(function() {
-          scope.countDown = "";
-        }, 1000)
-      };
-
-      scope.startGame = function() {
-        scope.gameStarted = true;
-        scope.countDown = 5;
-        //start countdown
-        var dec = $interval(function() { 
-          //if we reach 1
-          if (scope.countDown === 1) {
-            //stop countdown, start timer for typing game
-            $interval.cancel(dec);
-            scope.countDown = "Go!";
-            clearStartMes();
-            scope.disable = false;
-            textDisplay(true,false);
-            startTimer();
-            scope.$apply();
-            ele[0].querySelector('.text-type').focus();
-            // $timeout(ending, 10000);
-          } else {
-            scope.countDown--;
+          var stopTimer = function() {
+            $interval.cancel(timer);
           }
-        },1000);       
-      };
 
-      ele.bind("keyup", function(evt){
-        //check if spacebar is pressed
-        if (evt.keyCode == 32) {
-          if (current === scope.ans && total == scope.log.length) {
-            stopTimer();
-            ending();
-          } else if (current === scope.ans) {           
-            scope.log.push(scope.ans);
+          var updateData = function() {
+            current = wordsLeft.shift();
+            scope.dataCompleted = scope.log.join(" ");
+            scope.dataRemain = wordsLeft.join(" ");
+            scope.dataCurrent = current;
+          };
+
+          scope.createDisplay = function() {
+            scope.log = [];      
+            scope.count = 0;
+            scope.time = 0;
+            scope.wpm = 0;
+            scope.gameStarted = false;
+            scope.disable = true;
+            scope.gameOver = false;
+            scope.gameDisplay = true;
             updateData();
-            scope.ans = "";
-            scope.count++;
-            calcWPM(scope.log.length, (new Date - start)/1000)
-            textDisplay(true,false);
-          } else {
-            textDisplay(false,true);
-          }
-          scope.$digest();
-        }         
-      }); 
+          };        
 
-      scope.createDisplay();
-      textDisplay(false,false);      
+          var textDisplay = function(cur, fail) {
+            scope.cur = cur;
+            scope.fail = fail;
+          };      
+
+          var ending = function() {
+            var totalTime = (new Date - start)/1000;
+            stopTimer();
+            scope.ans = "";
+            scope.disable = true;
+            scope.gameOver = true;
+            scope.gameDisplay = false;
+            textDisplay(false,false);
+            calcWPM(scope.count,scope.time)
+            wordsLeft = data.split(" ");
+
+          };
+
+          var clearStartMes = function() {
+            $timeout(function() {
+              scope.countDown = "";
+            }, 1000)
+          };
+
+          scope.startGame = function() {
+            scope.gameStarted = true;
+            scope.countDown = 5;
+            //start countdown
+            var dec = $interval(function() { 
+              //if we reach 1
+              if (scope.countDown === 1) {
+                //stop countdown, start timer for typing game
+                $interval.cancel(dec);
+                scope.countDown = "Go!";
+                clearStartMes();
+                scope.disable = false;
+                textDisplay(true,false);
+                startTimer();
+                scope.$apply();
+                ele[0].querySelector('.text-type').focus();
+                // $timeout(ending, 10000);
+              } else {
+                scope.countDown--;
+              }
+            },1000);       
+          };
+
+          ele.bind("keyup", function(evt){
+            //check if spacebar is pressed
+            if (evt.keyCode == 32) {
+              if (current === scope.ans && total == scope.log.length) {
+                stopTimer();
+                ending();
+              } else if (current === scope.ans) {           
+                scope.log.push(scope.ans);
+                updateData();
+                scope.ans = "";
+                scope.count++;
+                calcWPM(scope.log.length, (new Date - start)/1000)
+                textDisplay(true,false);
+              } else {
+                textDisplay(false,true);
+              }
+              scope.$digest();
+            } else if(current === scope.ans) {
+              textDisplay(true,false);
+            }        
+          }); 
+
+          scope.createDisplay();
+          textDisplay(false,false);
+        });//end get request   
+      };//end scope.startAgain
+      scope.startAgain();     
     }
   }
 }]);

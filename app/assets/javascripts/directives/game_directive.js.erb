@@ -3,7 +3,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
     templateUrl: "<%= asset_path('templates/directives/game_template.html') %>",
     link: function(scope, ele, attr) {
         
-      var wordsLeft, total, current, timer, start;
+      var wordsLeft, total, current, timer, start, transPercent, trans;
 
       var calcWPM = function(words,time) {
         var adjust = 60/time;
@@ -15,6 +15,24 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         var percent = (correct/words) * 100;
         scope.accuracy = Math.ceil(percent);
       };
+
+      var calcTrans = function(words) {
+        transPercent = 1/words;
+      };
+
+      var adjTrans = function() {
+        var transStr = trans.toString();
+        scope.transparency = {
+          'opacity': transStr,
+          'background-color': 'black',
+          'width': '600px',
+          'height': '400px',
+          'position': 'absolute',
+          'top': '0',
+          'left': '15px',
+          'border-radius': '6px'
+        };
+      }
       
       var startTimer = function() {
         start = new Date();
@@ -35,6 +53,8 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       };
 
       scope.createDisplay = function() {
+        transPercent = 0;
+        trans = 1;
         scope.log = [];      
         scope.count = 0;
         scope.time = 0;
@@ -45,6 +65,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         scope.gameOver = false;
         scope.gameDisplay = true;
         updateData();
+        adjTrans();
       };        
 
       var textDisplay = function(cur, fail) {
@@ -98,15 +119,14 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         //check if spacebar is pressed
         if (evt.keyCode == 32) {
           //if the last word has been entered correctly
-          console.log("current: ", current, "scope.ans: ", scope.ans)
-
           if (current === scope.ans && total == scope.log.length) {
-            console.log("end")
             stopTimer();
             ending();
           //if word is entered correctly  
           } else if (current === scope.ans) {  
-            console.log("current === scope.ans")         
+            trans -= transPercent;
+            console.log(trans, transPercent);
+            adjTrans();
             scope.log.push(scope.ans);
             updateData();
             scope.ans = "";
@@ -115,7 +135,6 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
             textDisplay(true,false);
           } else {
             scope.errors++;
-            console.log("error "+scope.errors);
             textDisplay(false,true);
           }
           scope.$digest();
@@ -130,6 +149,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
           wordsLeft = data.split(" ");
           total = wordsLeft.length - 1;
           scope.createDisplay();
+          calcTrans(wordsLeft.length);
           textDisplay(false,false);
         });   
       };

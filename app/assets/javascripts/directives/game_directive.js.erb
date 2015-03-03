@@ -35,11 +35,12 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
       scope.createDisplay = function() {
         scope.log = [];      
         scope.count = 0;
+        scope.time = 0;
+        scope.wpm = 0;
         scope.gameStarted = false;
         scope.disable = true;
         scope.gameOver = false;
         scope.gameDisplay = true;
-        scope.wpm = "";
         updateData();
       };        
 
@@ -94,7 +95,6 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
       ele.bind("keyup", function(evt){
         //check if spacebar is pressed
         if (evt.keyCode == 32) {
-          console.log("current: ", current,"scope.log: ", scope.log, "scope.dataCompleted: ", scope.dataCompleted, "total:", total)
           if (current === scope.ans && total == scope.log.length) {
             stopTimer();
             ending();
@@ -103,6 +103,7 @@ app.directive("gameDirective", ["$timeout", "$interval", function($timeout, $int
             updateData();
             scope.ans = "";
             scope.count++;
+            calcWPM(scope.log.length, (new Date - start)/1000)
             textDisplay(true,false);
           } else {
             textDisplay(false,true);

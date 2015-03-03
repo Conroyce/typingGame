@@ -9,9 +9,13 @@
 }
 
 .fail {
-  border: 1px solid red;
+  border: 1px solid red !important;
 }
 
 .cur {
   border: 1px solid black;
+}
+
+.data {
+  font-size:1.25em;
 }

@@ -25,7 +25,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         scope.transparency = {
           'opacity': transStr,
           'color': 'white',
-          'font-size': '12em',
+          'font-size': '8em',
           'background-color': 'black',
           'width': '570px',
           'height': '370px',
@@ -41,7 +41,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         scope.progressBar = {
           'width': '0%'
         };
-      }
+      };
       
       var adjBar = function() {
         progBar += transPercent * 100;
@@ -174,7 +174,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         });   
       };
 
-      scope.startAgain();     
+      scope.startAgain(); 
     }
   }
 }]);

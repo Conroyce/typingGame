@@ -15,9 +15,14 @@
             <span ng-show="gameOver" class="btn btn-default space-right-2" ng-click="startAgain()">Try Again</span>
             <input class="btn btn-default space-right-2" ng-hide="gameStarted" type="button" ng-click="startGame()" value="Start Game"> WPM: {{wpm}} | Timer: {{time}}
           </h3>
+          <div class="progress space-top-2">
+            <div class="progress-bar progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" ng-style="progressBar">
+              <span class="sr-only">80% Complete (danger)</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row space-top-2">
+      <div class="row">
         <div class="col-xs-12">
           <p class="big-text" ng-show="gameDisplay">
             {{dataCompleted}} 

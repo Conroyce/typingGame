@@ -2,6 +2,14 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+body {
+  padding: 0;
+}
+
+h1 {
+  margin: 15px 0;
+}
+
 .fail,
 .cur {
   padding: 2px 5px;
@@ -51,6 +59,10 @@
 }
 
 .space-top-2 {
+  margin-top: 20px;
+}
+
+.space-top-1 {
   margin-top: 10px;
 }
 

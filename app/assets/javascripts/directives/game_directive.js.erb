@@ -3,7 +3,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
     templateUrl: "<%= asset_path('templates/directives/game_template.html') %>",
     link: function(scope, ele, attr) {
         
-      var wordsLeft, total, current, timer, start, transPercent, trans;
+      var wordsLeft, total, current, timer, start, transPercent, trans, progBar;
 
       var calcWPM = function(words,time) {
         var adjust = 60/time;
@@ -32,8 +32,23 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
           'left': '15px',
           'border-radius': '6px'
         };
+      };
+
+      var resetBar = function() {
+        scope.progressBar = {
+          'width': '0%'
+        };
       }
       
+      var adjBar = function() {
+        progBar += transPercent * 100;
+        var progressStr = progBar.toString();
+        console.log("adjBar", progressStr)
+        scope.progressBar = {
+          'width': progressStr + "%"
+        };
+      };
+
       var startTimer = function() {
         start = new Date();
         timer = $interval(function() {
@@ -54,6 +69,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
 
       scope.createDisplay = function() {
         transPercent = 0;
+        progBar = 0;
         trans = 1;
         scope.log = [];      
         scope.count = 0;
@@ -66,6 +82,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         scope.gameDisplay = true;
         updateData();
         adjTrans();
+        resetBar();
       };        
 
       var textDisplay = function(cur, fail) {
@@ -125,8 +142,8 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
           //if word is entered correctly  
           } else if (current === scope.ans) {  
             trans -= transPercent;
-            console.log(trans, transPercent);
             adjTrans();
+            adjBar();
             scope.log.push(scope.ans);
             updateData();
             scope.ans = "";

@@ -6,8 +6,8 @@ body {
   padding: 0;
 }
 
-h1 {
-  margin: 15px 0;
+.title {
+  font-size: 1.5em;
 }
 
 .fail,
@@ -27,15 +27,19 @@ h1 {
 }
 
 .big-text {
-  font-size:1.35em;
+  font-size:1.4em;
 }
 
 .centered {
   text-align: center;
 }
 
+.center-num {
+  margin-top: 50px;
+}
+
 .bigger-text {
-  font-size:1.45em;
+  font-size:1.5em;
 }
 
 .roundEdge {

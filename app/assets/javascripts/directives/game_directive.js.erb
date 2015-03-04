@@ -24,13 +24,16 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         var transStr = trans.toString();
         scope.transparency = {
           'opacity': transStr,
+          'color': 'white',
+          'font-size': '12em',
           'background-color': 'black',
           'width': '570px',
           'height': '370px',
           'position': 'absolute',
           'top': '0',
           'left': '15px',
-          'border-radius': '6px'
+          'border-radius': '6px',
+          'text-align': 'center'
         };
       };
 
@@ -52,7 +55,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       var startTimer = function() {
         start = new Date();
         timer = $interval(function() {
-          scope.time = (new Date - start) / 1000;
+          scope.time = ((new Date - start) / 1000).toFixed(1);
         });
       };
 

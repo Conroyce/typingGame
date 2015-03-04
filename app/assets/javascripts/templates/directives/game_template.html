@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col-xs-12">
           <img class="roundEdge border-black" src="http://lorempixel.com/550/350/">
-          <div ng-style="transparency"></div>
+          <div ng-style="transparency"><p class="center-num">{{countDown}}</p></div>
         </div>
       </div>       
       <div class="row space-top-2">
@@ -37,8 +37,7 @@
             You Typed {{log.length}} words at a rate of {{wpm}} WPM and {{accuracy}}% Accuracy!
           </p>
         </div>
-      </div>
-      <p ng-show="gameStarted">{{countDown}}</p>
+      </div>>
       <div class="row space-top-2">
         <div class="col-xs-3"></div>
         <div class="col-xs-6">

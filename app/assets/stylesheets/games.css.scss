@@ -19,27 +19,41 @@
 }
 
 .big-text {
-  font-size:1.3em;
+  font-size:1.35em;
+}
+
+.centered {
+  text-align: center;
 }
 
 .bigger-text {
-  font-size:1.4em;
+  font-size:1.45em;
 }
 
 .roundEdge {
   border-radius: 6px;
 }
 
+.tall-input {
+  height: 40px;
+}
+
 .div-relative {
   position: relative;
 }
 
-.div-cover {
-  background-color: black;
-  width: 700px;
-  height: 400px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius:6px;
+.border-black {
+  border: 10px solid black;
+}
+
+.space-top-4 {
+  margin-top: 40px;
+}
+
+.space-top-2 {
+  margin-top: 10px;
+}
+
+.space-right-2 {
+  margin-right:20px;
 }

@@ -7,8 +7,18 @@
   <%= csrf_meta_tags %>
 </head>
 <body ng-app="TypingGame">
-  <h1>TypeAnimator</h1>
-  <ng-view></ng-view>
+  <div class="row">
+    <div class="col-xs-5"></div>
+    <div class="col-xs-2">
+      <h1>TypeAnimator</h1>
+    </div>  
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-view></ng-view>
+    </div>  
+  </div>  
+
 
 </body>
 </html>

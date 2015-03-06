@@ -20,22 +20,22 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         transPercent = 1/words;
       };
 
-      var adjTrans = function() {
-        var transStr = trans.toString();
-        scope.transparency = {
-          'opacity': transStr,
-          'color': 'white',
-          'font-size': '8em',
-          'background-color': 'black',
-          'width': '570px',
-          'height': '370px',
-          'position': 'absolute',
-          'top': '0',
-          'left': '15px',
-          'border-radius': '6px',
-          'text-align': 'center'
-        };
-      };
+      // var adjTrans = function() {
+      //   var transStr = trans.toString();
+      //   scope.imgBackground = {
+      //     'opacity': transStr,
+      //     'color': 'white',
+      //     'font-size': '8em',
+      //     'background-color': 'black',
+      //     'width': '570px',
+      //     'height': '370px',
+      //     'position': 'absolute',
+      //     'top': '0',
+      //     'left': '15px',
+      //     'border-radius': '6px',
+      //     'text-align': 'center'
+      //   };
+      // };
 
       var resetBar = function() {
         scope.progressBar = {
@@ -84,7 +84,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         scope.gameOver = false;
         scope.gameDisplay = true;
         updateData();
-        adjTrans();
+        // adjTrans();
         resetBar();
       };        
 
@@ -145,7 +145,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
           //if word is entered correctly  
           } else if (current === scope.ans) {  
             trans -= transPercent;
-            adjTrans();
+            // adjTrans();
             adjBar();
             scope.log.push(scope.ans);
             updateData();

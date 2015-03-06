@@ -49,9 +49,23 @@ body {
 .img-background {
   width:100%;
   height: 350px;
-  background: url('http://www.gimpology.com/uploads/3_10_3.png');
   border-radius: 6px;
-  background-size:cover;
+  border: 10px solid black;
+}
+
+@-webkit-keyframes landscape {
+  0% {margin-left: -150px;}
+  100% {margin-left: -700px;}
+}
+
+@keyframes landscape {
+  0% {margin-left:0px;}
+  100% {margin-left:500px;}
+}
+
+.landscape {
+  -webkit-animation: landscape 4s linear infinite;
+  animation: landscape 4s linear infinite;
 }
 
 .tall-input {

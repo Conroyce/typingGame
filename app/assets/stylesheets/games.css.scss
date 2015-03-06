@@ -49,8 +49,9 @@ body {
 .img-background {
   width:100%;
   height: 350px;
-  background-color:black;
+  background: url('http://www.gimpology.com/uploads/3_10_3.png');
   border-radius: 6px;
+  background-size:cover;
 }
 
 .tall-input {

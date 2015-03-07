@@ -35,7 +35,8 @@ body {
 }
 
 .center-num {
-  margin-top: 17%;
+  font-size:8em;
+  text-align:center;
 }
 
 .bigger-text {
@@ -51,21 +52,68 @@ body {
   height: 350px;
   border-radius: 6px;
   border: 10px solid black;
+  position: relative;
+  overflow:hidden;
 }
 
-@-webkit-keyframes landscape {
+@-webkit-keyframes clouds {
   0% {margin-left: -150px;}
   100% {margin-left: -700px;}
 }
 
-@keyframes landscape {
+@keyframes clouds {
   0% {margin-left:0px;}
   100% {margin-left:500px;}
 }
 
+@keyframes planeDown {
+  0% {}
+  100% {margin-top:280px;}
+}
+
+@-webkit-keyframes planeDown {
+  0% {}
+  100% {margin-top:280px}
+}
+
+@-webkit-keyframes planeUp {
+  0% {}
+  100% {margin-top: -50px}
+}
+
+@-keyframes planeUp {
+  0% {}
+  100% {margin-top: -20px}
+}
+
+.planeDown {
+  -webkit-animation: planeDown 4s linear;
+  animation: planeDown 4s linear;
+}
+
+.planeUp {
+  -webkit-animation: planeUp 0.5s linear;
+  animation: planeUp 0.5s linear;
+}
+
+#plane {
+  position:absolute; 
+  z-index:100;
+  width: 40%; 
+  top:50px; 
+  left:50px;
+}
+
+.sky {
+  height:155%; 
+  margin-top: -30%; 
+  margin-left:-5%; 
+  z-index:0;
+}
+
 .landscape {
-  -webkit-animation: landscape 4s linear infinite;
-  animation: landscape 4s linear infinite;
+  -webkit-animation: clouds 4s linear infinite;
+  animation: clouds 4s linear infinite;
 }
 
 .tall-input {

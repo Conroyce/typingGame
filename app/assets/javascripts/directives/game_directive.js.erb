@@ -46,7 +46,6 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       var adjBar = function() {
         progBar += transPercent * 100;
         var progressStr = progBar.toString();
-        console.log("adjBar", progressStr)
         scope.progressBar = {
           'width': progressStr + "%"
         };
@@ -91,7 +90,42 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       var textDisplay = function(cur, fail) {
         scope.cur = cur;
         scope.fail = fail;
-      };      
+      };     
+
+      // var planeStyle = function(px) {
+      //   px -= 75;
+      //   scope.planeDown = false;
+      //   scope.planeStyle = {
+      //     'top':px+'px'
+      //   }
+      //   scope.planeUp = true;  
+      // }; 
+
+      var planeDown = function() {
+        var px = $('#plane').offset().top;
+        px -= 75;
+        console.log(px);
+        scope.planeStyle = {
+          'top':px+'px'
+        };
+        scope.planeDown = true;
+        scope.planeUp = false;
+      }
+
+      var planeUp = function() {
+        var px = $('#plane').offset().top;
+        console.log(px)
+        px -= 75;
+        scope.planeStyle = {
+          'top':px+'px'
+        }
+        scope.planeUp = true;
+        scope.planeDown = false;
+        $timeout(function() {
+          scope.planeStyle = { 'top':px+'px' };
+          planeDown(px);
+        },500);
+      }
 
       var ending = function() {
         var totalTime = (new Date - start)/1000;
@@ -125,10 +159,11 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
             clearStartMes();
             scope.disable = false;
             textDisplay(true,false);
+            scope.planeDown = true;
+            scope.planeUp = false;
             startTimer();
             scope.$apply();
             ele[0].querySelector('.text-type').focus();
-            // $timeout(ending, 10000);
           } else {
             scope.countDown--;
           }
@@ -146,6 +181,8 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
           } else if (current === scope.ans) {  
             trans -= transPercent;
             // adjTrans();
+            var planeCoord = $('#plane').offset();
+            planeUp()
             adjBar();
             scope.log.push(scope.ans);
             updateData();
@@ -163,6 +200,11 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         }        
       }); 
 
+      $('#plane').bind("animationend webkitAnimationEnd", function() {
+        console.log("animation ended!");
+
+      })
+
       //initalizing function
       scope.startAgain = function(){
         $http.get("http://numbersapi.com/random/trivia").success(function(data) {
@@ -173,6 +215,10 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
           textDisplay(false,false);
         });   
       };
+
+      if ($('#plane').offset.top > 300) {
+        console.log("greater than 300.")
+      }
 
       scope.startAgain(); 
     }

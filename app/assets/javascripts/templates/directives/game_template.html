@@ -1,14 +1,29 @@
 <div class="container">
   <div class="row">
-    <div class="col-xs-3">
+    <div class="col-xs-2">
     </div>
-    <div class="col-xs-6 div-relative">
+    <div class="col-xs-8 div-relative">
       <div class="row">
         <div class="col-xs-12">
-          <div class="img-background">
-            <img ng-class="{planeDown:planeDown,planeUp:planeUp}"  ng-style="planeStyle" id="plane" src="http://touque.ca/EC/ICS3U/students/2011-02/ICS3U2C/HuangJ/Images/cartoon-airplane.png">
-            <img class="sky" src="http://fc02.deviantart.net/fs71/f/2012/265/f/a/cartoon_clouds_by_mr_pie309-d5fl828.png">
-            
+          <div ng-style="canvasImg">
+            <div class="row">
+              <div class="col-xs-3 block b-1"></div>
+              <div class="col-xs-3 block b-2"></div>
+              <div class="col-xs-3 block b-3"></div>
+              <div class="col-xs-3 block b-4"></div>
+            </div>
+            <div class="row">
+              <div class="col-xs-3 block b-5"></div>
+              <div class="col-xs-3 block b-6"></div>
+              <div class="col-xs-3 block b-7"></div>
+              <div class="col-xs-3 block b-8"></div>
+            </div>
+            <div class="row">
+              <div class="col-xs-3 block b-9"></div>
+              <div class="col-xs-3 block b-10"></div>
+              <div class="col-xs-3 block b-11"></div>
+              <div class="col-xs-3 block b-12"></div>
+            </div>
           </div>
         </div>
       </div>       
@@ -22,7 +37,7 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <p class="big-text" ng-show="gameDisplay">
+          <p class="big-text animate-enter" ng-show="gameDisplay">
             {{dataCompleted}} 
             <span ng-class="{cur: cur, fail: fail}">{{dataCurrent}}</span> 
             {{dataRemain}}

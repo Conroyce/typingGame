@@ -47,13 +47,9 @@ body {
   border-radius: 6px;
 }
 
-.img-background {
-  width:100%;
-  height: 350px;
-  border-radius: 6px;
-  border: 10px solid black;
-  position: relative;
-  overflow:hidden;
+.block {
+  height:134px;
+  background-color:black;
 }
 
 @-webkit-keyframes clouds {
@@ -83,7 +79,7 @@ body {
 
 @-keyframes planeUp {
   0% {}
-  100% {margin-top: -20px}
+  100% {margin-top: -50px}
 }
 
 .planeDown {
@@ -109,6 +105,12 @@ body {
   margin-top: -30%; 
   margin-left:-5%; 
   z-index:0;
+}
+
+.textAnimate {
+  opacity: 1;
+  top: 0;
+  height: 30px;
 }
 
 .landscape {

@@ -5,6 +5,11 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         
       var wordsLeft, total, current, timer, start, transPercent, trans, progBar;
 
+      var data = "Today was beautiful. Not a cloud in the sky. We sat back and watched the day gracefully pass by. I slowly stretched my arms."
+      var id = 1;
+      var currentNum = 1;
+      var len = data.split(" ").length;
+
       var calcWPM = function(words,time) {
         var adjust = 60/time;
         scope.wpm = Math.ceil(words * adjust);
@@ -20,22 +25,27 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         transPercent = 1/words;
       };
 
-      // var adjTrans = function() {
-      //   var transStr = trans.toString();
-      //   scope.imgBackground = {
-      //     'opacity': transStr,
-      //     'color': 'white',
-      //     'font-size': '8em',
-      //     'background-color': 'black',
-      //     'width': '570px',
-      //     'height': '370px',
-      //     'position': 'absolute',
-      //     'top': '0',
-      //     'left': '15px',
-      //     'border-radius': '6px',
-      //     'text-align': 'center'
-      //   };
-      // };
+      scope.canvasImg = {
+        'width':'100%',
+        'height': '402px',
+        'border-radius': '6px',
+        'border': '10px solid black',
+        'position': 'relative',
+        'background': 'url("http://hdwallpaper.freehdw.com/0001/nature-landscapes_hdwallpaper_calm-lake_2022.jpg")',
+        'background-size': 'cover'
+      };
+
+      var hideBlock = function() {
+        // var id = Math.floor((Math.random()*12)+1);
+        var inc = len/12;
+        console.log("inc: ", inc, "currentNum: ", currentNum, "len: ", len, "id: ", id);
+        if (currentNum % inc == 0) {
+          console.log(id);
+          ele[0].querySelector('.b-'+id).style.display="none";
+          id++;
+        }
+        currentNum++;
+      }
 
       var resetBar = function() {
         scope.progressBar = {
@@ -92,40 +102,45 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         scope.fail = fail;
       };     
 
-      // var planeStyle = function(px) {
-      //   px -= 75;
-      //   scope.planeDown = false;
+      // var planeTimer = function() {
+      //   px = px || 270;
+      //   var timer = (px/70) * 1000;
+      //   console.log("before cancel: ", timed)
+      //   $timeout.cancel(timed);
+      //   timed = $timeout(function() {
+      //     console.log("timed out: ", timed);
+      //     stopTimer();
+      //     ending();
+      //   }, timer);
+      //   console.log("after timeout: ", timed)
+      // };
+
+      // var planeDown = function() {
+      //   px = $('#plane').offset().top-75;
+      //   // px -= 75;
+      //   console.log(px);
+      //   scope.planeStyle = {
+      //     'top':px+'px'
+      //   };
+      //   scope.planeDown = true;
+      //   scope.planeUp = false;
+      // }
+
+      // var planeUp = function() {
+      //   px = $('#plane').offset().top-75;
+      //   console.log(px)
+      //   // px -= 75;
       //   scope.planeStyle = {
       //     'top':px+'px'
       //   }
-      //   scope.planeUp = true;  
-      // }; 
-
-      var planeDown = function() {
-        var px = $('#plane').offset().top;
-        px -= 75;
-        console.log(px);
-        scope.planeStyle = {
-          'top':px+'px'
-        };
-        scope.planeDown = true;
-        scope.planeUp = false;
-      }
-
-      var planeUp = function() {
-        var px = $('#plane').offset().top;
-        console.log(px)
-        px -= 75;
-        scope.planeStyle = {
-          'top':px+'px'
-        }
-        scope.planeUp = true;
-        scope.planeDown = false;
-        $timeout(function() {
-          scope.planeStyle = { 'top':px+'px' };
-          planeDown(px);
-        },500);
-      }
+      //   scope.planeUp = true;
+      //   scope.planeDown = false;
+      //   $timeout(function() {
+      //     scope.planeStyle = { 'top':px+'px' };
+      //     planeDown(px);
+      //     planeTimer();
+      //   },500);
+      // }
 
       var ending = function() {
         var totalTime = (new Date - start)/1000;
@@ -159,9 +174,8 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
             clearStartMes();
             scope.disable = false;
             textDisplay(true,false);
-            scope.planeDown = true;
-            scope.planeUp = false;
             startTimer();
+            // planeTimer();
             scope.$apply();
             ele[0].querySelector('.text-type').focus();
           } else {
@@ -174,18 +188,22 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         //check if spacebar is pressed
         if (evt.keyCode == 32) {
           //if the last word has been entered correctly
+          console.log("current: ",current, "scope.ans: ", scope.ans); 
           if (current === scope.ans && total == scope.log.length) {
+            hideBlock();
             stopTimer();
             ending();
-          //if word is entered correctly  
+          //if word is entered correctly 
           } else if (current === scope.ans) {  
             trans -= transPercent;
             // adjTrans();
-            var planeCoord = $('#plane').offset();
-            planeUp()
+            // var planeCoord = $('#plane').offset();
+            // planeUp()
+            console.log("inside correct word")
             adjBar();
             scope.log.push(scope.ans);
             updateData();
+            hideBlock();
             scope.ans = "";
             scope.count++;
             calcWPM(scope.log.length, (new Date - start)/1000)
@@ -196,29 +214,19 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
           }
           scope.$digest();
         } else if(current === scope.ans) {
+
           textDisplay(true,false);
         }        
       }); 
 
-      $('#plane').bind("animationend webkitAnimationEnd", function() {
-        console.log("animation ended!");
-
-      })
-
       //initalizing function
       scope.startAgain = function(){
-        $http.get("http://numbersapi.com/random/trivia").success(function(data) {
-          wordsLeft = data.split(" ");
-          total = wordsLeft.length - 1;
-          scope.createDisplay();
-          calcTrans(wordsLeft.length);
-          textDisplay(false,false);
-        });   
+        wordsLeft = data.split(" ");
+        total = wordsLeft.length - 1;
+        scope.createDisplay();
+        calcTrans(wordsLeft.length);
+        textDisplay(false,false);   
       };
-
-      if ($('#plane').offset.top > 300) {
-        console.log("greater than 300.")
-      }
 
       scope.startAgain(); 
     }

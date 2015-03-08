@@ -48,74 +48,8 @@ body {
 }
 
 .block {
-  height:134px;
+  height:132px;
   background-color:black;
-}
-
-@-webkit-keyframes clouds {
-  0% {margin-left: -150px;}
-  100% {margin-left: -700px;}
-}
-
-@keyframes clouds {
-  0% {margin-left:0px;}
-  100% {margin-left:500px;}
-}
-
-@keyframes planeDown {
-  0% {}
-  100% {margin-top:280px;}
-}
-
-@-webkit-keyframes planeDown {
-  0% {}
-  100% {margin-top:280px}
-}
-
-@-webkit-keyframes planeUp {
-  0% {}
-  100% {margin-top: -50px}
-}
-
-@-keyframes planeUp {
-  0% {}
-  100% {margin-top: -50px}
-}
-
-.planeDown {
-  -webkit-animation: planeDown 4s linear;
-  animation: planeDown 4s linear;
-}
-
-.planeUp {
-  -webkit-animation: planeUp 0.5s linear;
-  animation: planeUp 0.5s linear;
-}
-
-#plane {
-  position:absolute; 
-  z-index:100;
-  width: 40%; 
-  top:50px; 
-  left:50px;
-}
-
-.sky {
-  height:155%; 
-  margin-top: -30%; 
-  margin-left:-5%; 
-  z-index:0;
-}
-
-.textAnimate {
-  opacity: 1;
-  top: 0;
-  height: 30px;
-}
-
-.landscape {
-  -webkit-animation: clouds 4s linear infinite;
-  animation: clouds 4s linear infinite;
 }
 
 .tall-input {
@@ -126,8 +60,13 @@ body {
   position: relative;
 }
 
+.canvasDiv {
+  margin-top:-10px;
+  overflow:hidden;
+}
+
 .border-black {
-  border: 10px solid black;
+  border: 9px solid black;
 }
 
 .space-top-4 {

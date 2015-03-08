@@ -6,24 +6,26 @@
       <div class="row">
         <div class="col-xs-12">
           <div ng-style="canvasImg">
-            <div class="row">
-              <div class="col-xs-3 block b-1"></div>
-              <div class="col-xs-3 block b-2"></div>
-              <div class="col-xs-3 block b-3"></div>
-              <div class="col-xs-3 block b-4"></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-3 block b-5"></div>
-              <div class="col-xs-3 block b-6"></div>
-              <div class="col-xs-3 block b-7"></div>
-              <div class="col-xs-3 block b-8"></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-3 block b-9"></div>
-              <div class="col-xs-3 block b-10"></div>
-              <div class="col-xs-3 block b-11"></div>
-              <div class="col-xs-3 block b-12"></div>
-            </div>
+            <div class="canvasDiv">         
+              <div class="row">
+                <div class="col-xs-3 block b-1"></div>
+                <div class="col-xs-3 block b-2"></div>
+                <div class="col-xs-3 block b-3"></div>
+                <div class="col-xs-3 block b-4"></div>
+              </div>
+              <div class="row">
+                <div class="col-xs-3 block b-5"></div>
+                <div class="col-xs-3 block b-6"></div>
+                <div class="col-xs-3 block b-7"></div>
+                <div class="col-xs-3 block b-8"></div>
+              </div>
+              <div class="row">
+                <div class="col-xs-3 block b-9"></div>
+                <div class="col-xs-3 block b-10"></div>
+                <div class="col-xs-3 block b-11"></div>
+                <div class="col-xs-3 block b-12"></div>
+              </div>
+            </div>    
           </div>
         </div>
       </div>       
@@ -46,7 +48,7 @@
       </div>  
       <div class="row space-top-2" ng-show="gameOver">
         <div class="col-xs-12">      
-          <p class="big-text">
+          <p class="big-text centered">
             You Typed {{log.length}} words at a rate of {{wpm}} WPM and {{accuracy}}% Accuracy!
           </p>
         </div>

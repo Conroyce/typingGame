@@ -6,9 +6,28 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       var wordsLeft, total, current, timer, start, transPercent, trans, progBar;
 
       var data = "Today was beautiful. Not a cloud in the sky. We sat back and watched the day gracefully pass by. I slowly stretched my arms."
-      var id = 1;
+      var id = 0;
       var currentNum = 1;
       var len = data.split(" ").length;
+
+      //knuth's algorithm
+      var uniqueNums = function() {
+        var sortedNums = [1,2,3,4,5,6,7,8,9,10,11,12],
+            n = sortedNums.length,
+            temp,
+            randomNum;
+        
+        while (n > 1) {
+          randomNum = Math.floor(Math.random() * n);
+          n--;
+          temp = sortedNums[n];
+          sortedNums[n] = sortedNums[randomNum];
+          sortedNums[randomNum] = temp;
+        }
+        return sortedNums;
+      };
+
+      var blockIds = uniqueNums();
 
       var calcWPM = function(words,time) {
         var adjust = 60/time;
@@ -36,12 +55,9 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       };
 
       var hideBlock = function() {
-        // var id = Math.floor((Math.random()*12)+1);
         var inc = len/12;
-        console.log("inc: ", inc, "currentNum: ", currentNum, "len: ", len, "id: ", id);
         if (currentNum % inc == 0) {
-          console.log(id);
-          ele[0].querySelector('.b-'+id).style.display="none";
+          ele[0].querySelector('.b-'+blockIds[id]).style.display="none";
           id++;
         }
         currentNum++;

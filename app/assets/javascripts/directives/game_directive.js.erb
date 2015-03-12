@@ -10,6 +10,15 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       var currentNum = 1;
       var len = data.split(" ").length;
 
+      var dispPastScores = function() {
+        if (localStorage.scores) {
+          var scoreArr = localStorage.scores.split(",");
+          scope.pastScores = scoreArr.slice(0,scoreArr.length-1);
+        } 
+      };
+
+      dispPastScores(); 
+
       //knuth's algorithm
       var uniqueNums = function() {
         var sortedNums = [1,2,3,4,5,6,7,8,9,10,11,12],
@@ -110,7 +119,21 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         scope.gameDisplay = true;
         updateData();
         resetBar();
-      };        
+      };     
+
+      var addPastScore = function() {
+        console.log("wpm: ",scope.wpm);
+        if (!localStorage.scores) {
+          localStorage.scores = scope.wpm + ",";
+          console.log("first score: ", localStorage.scores);
+        } else {
+          localStorage.scores += scope.wpm + ",";
+          console.log("many scores: ", localStorage.scores);
+        }
+        var scoreArr = localStorage.scores.split(",");
+        console.log("scoreArr: ", scoreArr);
+        scope.pastScores = scoreArr.slice(0,scoreArr.length-1);
+      };   
 
       var textDisplay = function(cur, fail) {
         scope.cur = cur;
@@ -127,6 +150,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         textDisplay(false,false);
         calcWPM(scope.count,scope.time)
         calcAccuracy(scope.count,scope.errors)
+        addPastScore();
       };
 
       var clearStartMes = function() {

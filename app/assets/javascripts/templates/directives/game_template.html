@@ -1,8 +1,8 @@
-<div class="container">
+
   <div class="row">
     <div class="col-xs-2">
     </div>
-    <div class="col-xs-8 div-relative">
+    <div class="col-xs-6 div-relative">
       <div class="row">
         <div class="col-xs-12">
           <div ng-style="canvasImg">
@@ -65,5 +65,13 @@
           <p class="center-num">{{countDown}}</p>
         </div>  
     </div>   
-  </div>    
-</div>
+  </div> 
+  <div class="col-xs-3">
+    <h3 class="centered">Recent Scores</h3>
+    <ol>
+      <div ng-repeat="score in pastScores">
+        <li>WPM: {{score}}</li>
+      </div>  
+    </ol>
+  </div>
+

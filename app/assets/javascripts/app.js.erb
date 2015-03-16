@@ -5,6 +5,10 @@ var app = angular.module("TypingGame",["ngRoute"])
         templateUrl: "<%= asset_path('templates/views/game.html') %>",
         controller: "GameCtrl"
       })
+      .when("/landing", {
+        templateUrl: "<%= asset_path('templates/views/landing.html') %>",
+        controller: "LandCtrl"
+      })
       .otherwise({
         redirectTo: "/"
       });

@@ -1,0 +1,8 @@
+app.directive("landDirective", ["$http", function($http) {
+  return {
+    templateUrl: "<%= asset_path('templates/directives/land_template.html') %>",
+    link: function(scope, ele, attr) {
+      scope.x = "hello";
+    }
+  }
+}]);

@@ -11,6 +11,10 @@ body {
   font-size: 1.7em;
 }
 
+.title:hover {
+  color:#444;
+}
+
 .fail,
 .cur {
   padding: 2px 5px;
@@ -61,7 +65,7 @@ body {
 }
 
 .navbar a.nav-link:hover {
-  color:#ddd;
+  color:#444;
   background-color:rgba(0,0,0,0)
 }
 

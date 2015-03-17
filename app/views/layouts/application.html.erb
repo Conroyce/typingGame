@@ -7,26 +7,10 @@
   <%= csrf_meta_tags %>
 </head>
 <body ng-app="TypingGame"> 
-  <div ng-controller="NavCtrl">
-    <nav ng-class="{changeNav:changeNav}" class="navbar navbar-fixed-top">
-      <div class="container">
-        <a href="/" class="navbar-brand title">TypeAnimator</a>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href="/" class="nav-link">Sign In</a>
-            </li>
-          </ul>
-        </div>  
-      </div> 
-    </nav>
-  </div>
   <div class="row">
     <div class="col-xs-12">
       <ng-view></ng-view>
     </div>  
   </div>  
-
-
 </body>
 </html>

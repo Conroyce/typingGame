@@ -55,9 +55,14 @@ body {
   color: #fff;
 }
 
-.nav-link {
-  color:#444;
-  font-size:1.25em;
+.navbar a.nav-link {
+  font-size:1.3em;
+  margin-top:12px;
+}
+
+.navbar a.nav-link:hover {
+  color:#ddd;
+  background-color:rgba(0,0,0,0)
 }
 
 .land-img {
@@ -115,13 +120,17 @@ body {
   margin-top:10px;
 }
 
-nav.changeNav {
-  color:#fff;
-  background-color: rgba(255,255,255,0.7);
+nav.landingNav {
+  background-color: #fff;
 }
 
-.changeNav a {
-  color:#777;
+.landingNav a {
+  color:#666;
+}
+
+.mainNav {
+  background-color:#3E606F;
+  margin-bottom: 80px;
 }
 
 .roundEdge {

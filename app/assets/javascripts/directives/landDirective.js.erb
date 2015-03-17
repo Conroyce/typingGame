@@ -1,8 +1,8 @@
-app.directive("landDirective", ["$http", function($http) {
+app.directive("landDirective", ["$http", "$window", function($http, $window) {
   return {
     templateUrl: "<%= asset_path('templates/directives/land_template.html') %>",
     link: function(scope, ele, attr) {
-      scope.img = "https://www.flashwod.com/img/home-images/score-icon.png";
+
     }
   }
 }]);

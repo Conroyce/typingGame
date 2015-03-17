@@ -3,10 +3,9 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
     templateUrl: "<%= asset_path('templates/directives/game_template.html') %>",
     link: function(scope, ele, attr) {
         
-      var wordsLeft, total, current, timer, start, transPercent, trans, progBar;
+      var wordsLeft, total, current, timer, start, transPercent, trans, progBar, id;
 
       var data = "Today was beautiful. Not a cloud in the sky. We sat back and watched the day gracefully pass by. I slowly stretched my arms."
-      var id = 0;
       var currentNum = 1;
       var len = data.split(" ").length;
 
@@ -66,11 +65,22 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       var hideBlock = function() {
         var inc = len/12;
         if (currentNum % inc == 0) {
+          console.log("inside hideBlock: ", blockIds, id)
           ele[0].querySelector('.b-'+blockIds[id]).style.display="none";
           id++;
         }
         currentNum++;
       }
+
+      var blockDisplay = function(num) {
+        ele[0].querySelector('.b-'+num).style.display="inline";
+      };
+
+      var resetBlock = function() {
+        for (var i = 1; i <= 12; i++) {
+          blockDisplay(i);
+        }
+      };
 
       var resetBar = function() {
         scope.progressBar = {
@@ -107,6 +117,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       scope.createDisplay = function() {
         transPercent = 0;
         progBar = 0;
+        id = 0;
         trans = 1;
         scope.log = [];      
         scope.count = 0;
@@ -117,8 +128,10 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         scope.disable = true;
         scope.gameOver = false;
         scope.gameDisplay = true;
+        resetBlock();
         updateData();
         resetBar();
+        scope.$apply();
       };     
 
       var addPastScore = function() {

@@ -5,6 +5,7 @@
 body {
   padding: 0;
   color:#444;
+  width:100%;
 }
 
 .title {
@@ -170,6 +171,7 @@ nav.landingNav {
 .land-footer {
   height:100px;
   font-size:1.2em;
+  color:#444;
 }
 
 .land-footer ul {
@@ -210,6 +212,10 @@ nav.landingNav {
 
 .border-black {
   border: 9px solid black;
+}
+
+.col-xs-12 {
+  padding:0;
 }
 
 .space-top-4 {

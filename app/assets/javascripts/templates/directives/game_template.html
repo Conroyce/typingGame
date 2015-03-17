@@ -83,7 +83,7 @@
 <div class="col-xs-3">
   <h3 class="centered">Recent Scores</h3>
   <ol>
-    <div ng-repeat="score in pastScores">
+    <div ng-repeat="score in pastScores track by $index">
       <li>WPM: {{score}}</li>
     </div>  
   </ol>

@@ -85,16 +85,16 @@ body {
 
 .land-img1 {
   margin: 40px auto;
-  margin-top:70px;
+  margin-top:90px;
 }
 
 .land-img2 {
   margin:25px auto;
-  margin-top:50px;
+  margin-top:70px;
 }
 
 .land-img3 {
-  margin: 50px auto;
+  margin: 70px auto;
   margin-bottom:25px;
 }
 
@@ -125,16 +125,65 @@ body {
 }
 
 nav.landingNav {
-  background-color: #fff;
+  background-color: #000;
 }
 
 .landingNav a {
-  color:#666;
+  color:#fff;
 }
 
 .mainNav {
   background-color:#3E606F;
   margin-bottom: 80px;
+}
+
+.land-third {
+  background-color:#3E606F;
+  color:white;
+  height:580px;
+  padding:20px 0;
+}
+
+.land-third h2 {
+  margin-top:40px;
+  margin-bottom:30px;
+  font-weight:200;
+}
+
+
+.land-third h3 {
+  margin-top:125px;
+  font-weight:200;
+  font-size:1.6em;
+  margin-bottom:20px;
+}
+
+.land-third p {
+  color:#ddd;
+}
+
+.land-third .col-xs-7 {
+  margin-right:-50px;
+  padding-left:10%;
+}
+
+.land-footer {
+  height:100px;
+  font-size:1.2em;
+}
+
+.land-footer ul {
+  margin-top:20px;
+  margin-left:-5%;
+}
+
+.land-footer li {
+  list-style:none;
+  display:inline-block;
+}
+
+.land-footer a {
+  color:inherit;
 }
 
 .roundEdge {

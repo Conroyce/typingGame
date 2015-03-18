@@ -80,12 +80,13 @@
       </div>  
   </div>   
 </div> 
-<div class="col-xs-3">
+<div class="col-xs-3 recentScores">
   <h3 class="centered">Recent Scores</h3>
   <ol>
     <div ng-repeat="score in pastScores track by $index">
       <li>WPM: {{score}}</li>
     </div>  
   </ol>
+  <input type="button" ng-show="pastScores" ng-click="resetRecent()" value="Reset Scores" class="btn btn-default centered resetButton">
 </div>
 

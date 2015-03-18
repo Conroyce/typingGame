@@ -24,7 +24,11 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       var dispPastScores = function() {
         if (localStorage.scores) {
           var scoreArr = localStorage.scores.split(",");
-          scope.pastScores = scoreArr.slice(0,scoreArr.length-1);
+          if (scoreArr.length > 11) {
+            scope.pastScores = scoreArr.slice(scoreArr.length-11, scoreArr.length-1).reverse();
+          } else {
+            scope.pastScores = scoreArr.slice(0,scoreArr.length-1).reverse();  
+          }
         } 
       };
 
@@ -165,9 +169,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
           localStorage.scores += scope.wpm + ",";
           console.log("many scores: ", localStorage.scores);
         }
-        var scoreArr = localStorage.scores.split(",");
-        console.log("scoreArr: ", scoreArr);
-        scope.pastScores = scoreArr.slice(0,scoreArr.length-1);
+        dispPastScores();
       };   
 
       var textDisplay = function(cur, fail) {
@@ -192,6 +194,11 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         $timeout(function() {
           scope.countDown = "";
         }, 1000)
+      };
+
+      scope.resetRecent = function() {
+        localStorage.clear();
+        scope.pastScores = ""
       };
 
       scope.startGame = function() {

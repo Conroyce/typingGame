@@ -201,6 +201,11 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         scope.pastScores = ""
       };
 
+      var dispGo = function() {
+        scope.centerNumLet = true;
+        scope.countDown = "Go!";
+      };
+
       scope.startGame = function() {
         scope.gameStarted = true;
         scope.countDown = 5;
@@ -210,7 +215,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
           if (scope.countDown === 1) {
             //stop countdown, start timer for typing game
             $interval.cancel(dec);
-            scope.countDown = "Go!";
+            dispGo();
             clearStartMes();
             scope.disable = false;
             textDisplay(true,false);
@@ -262,6 +267,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         total = wordsLeft.length - 1;
         setCanvas();
         scope.createDisplay();
+        scope.centerNumLet = false;
         calcTrans(wordsLeft.length);
         textDisplay(false,false);   
       };

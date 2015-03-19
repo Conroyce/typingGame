@@ -21,13 +21,34 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       var currentNum = 1;
       // var len = data[currentGame].split(" ").length;
 
+      var dispPastAvg = function(arr) {
+        var len = arr.length,
+            parsedArr = [];
+
+        arr.forEach(function(x) {
+          parsedArr.push(parseInt(x));
+        });
+
+        var sum = parsedArr.reduce(function(prev,cur) {
+          return prev + cur;
+        });
+
+        console.log(sum, arr.length, parsedArr)
+        return (sum/parsedArr.length).toFixed(1);
+      }
+
       var dispPastScores = function() {
         if (localStorage.scores) {
-          var scoreArr = localStorage.scores.split(",");
+          var arr,
+              scoreArr = localStorage.scores.split(",");
           if (scoreArr.length > 11) {
-            scope.pastScores = scoreArr.slice(scoreArr.length-11, scoreArr.length-1).reverse();
+            arr = scoreArr.slice(scoreArr.length-11, scoreArr.length-1);
+            scope.pastAvg = dispPastAvg(arr);
+            scope.pastScores = arr.reverse();
           } else {
-            scope.pastScores = scoreArr.slice(0,scoreArr.length-1).reverse();  
+            arr = scoreArr.slice(0,scoreArr.length-1);
+            scope.pastAvg = dispPastAvg(arr)
+            scope.pastScores = arr.reverse();  
           }
         } 
       };
@@ -205,7 +226,8 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
 
       scope.resetRecent = function() {
         localStorage.clear();
-        scope.pastScores = ""
+        scope.pastScores = "";
+        scope.pastAvg = 0;
       };
 
       scope.resetGame = function() {

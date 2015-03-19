@@ -123,6 +123,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       };
 
       var startTimer = function() {
+        scope.resetGameButton = true;
         start = new Date();
         timer = $interval(function() {
           scope.time = ((new Date - start) / 1000).toFixed(1);
@@ -184,6 +185,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         scope.disable = true;
         scope.gameOver = true;
         scope.gameDisplay = false;
+        scope.resetGameButton = false;
         textDisplay(false,false);
         calcWPM(scope.count,scope.time)
         calcAccuracy(scope.count,scope.errors)
@@ -196,15 +198,27 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         }, 1000)
       };
 
+      var dispGo = function() {
+        scope.centerNumLet = true;
+        scope.countDown = "Go!";
+      };
+
       scope.resetRecent = function() {
         localStorage.clear();
         scope.pastScores = ""
       };
 
-      var dispGo = function() {
-        scope.centerNumLet = true;
-        scope.countDown = "Go!";
-      };
+      scope.resetGame = function() {
+        wordsLeft = data[currentGame].split(" ");
+        setCanvas();
+        stopTimer();
+        scope.createDisplay();
+        scope.centerNumLet = false;
+        calcTrans(wordsLeft.length);
+        textDisplay(false,false); 
+        scope.resetGameButton = false;
+        scope.current = "";
+      }
 
       scope.startGame = function() {
         scope.gameStarted = true;
@@ -259,6 +273,16 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
           textDisplay(true,false);
         }        
       }); 
+
+      scope.startOver = function() {
+        wordsLeft = data[currentGame].split(" ");
+        total = wordsLeft.length - 1;
+        setCanvas();
+        scope.createDisplay();
+        scope.centerNumLet = false;
+        calcTrans(wordsLeft.length);
+        textDisplay(false,false);
+      };
 
       //initalizing function
       scope.startAgain = function(){

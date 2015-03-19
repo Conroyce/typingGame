@@ -47,7 +47,9 @@
     <div class="row space-top-2">
       <div class="col-xs-12">
         <h3 class="centered">
-          <span ng-show="gameOver" class="btn btn-default space-right-2" ng-click="startAgain()">Try Again</span>
+          <span ng-show="gameOver" class="btn btn-default space-right-2" ng-click="startAgain()">Next Game</span>
+          <span ng-show="gameOver" class="btn btn-default space-right-2" ng-click="startOver()">Try Again</span>
+          <span ng-show="resetGameButton" class="btn btn-default space-right-2" ng-click="resetGame()">Reset Game</span>
           <input class="btn btn-default space-right-2" ng-hide="gameStarted" type="button" ng-click="startGame()" value="Start Game"> WPM: {{wpm}} | Timer: {{time}}
         </h3>
       </div>

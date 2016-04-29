@@ -1,24 +1,18 @@
-app.directive("gameDirective", ["$timeout", "$interval", "$http", function($timeout, $interval, $http) {
+app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "text", function($timeout, $interval, $http, images, text) {
   return {
     templateUrl: "<%= asset_path('templates/directives/game_template.html') %>",
     link: function(scope, ele, attr) {
-        
-      var wordsLeft, total, current, timer, start, transPercent, trans, progBar, id;
 
-      var data = [
-        "'Hey man, you ready?', Steve exclaimed. I nodded. My body was shaking and my heart was pounding. I yelled 'Geranimo!!', and then jumped off.",
-        "Craig watched the sunlight slowly fade away. He closed his eyes and relaxed his tensed shoulders. He felt himself slowly drift into the abyss.",
-        "Today was beautiful. Not a cloud in the sky. We sat back and watched the day gracefully pass by. I slowly stretched my arms.",
-        "We're no strangers to love. You know the rules and so do I. A full commitment's what I'm thinking of. You wouldn't get this from any other guy. I just wanna tell you how I'm feeling."
-      ];
-      var images = [
-        "http://www.literallydarling.com/wp-content/uploads/2014/08/skydiving-fantastic.png",
-        "https://s-media-cache-ak0.pinimg.com/originals/62/0f/d3/620fd37f23c145d6bb11d6e3382af92e.jpg",
-        "http://hdwallpaper.freehdw.com/0001/nature-landscapes_hdwallpaper_calm-lake_2022.jpg",
-        "http://i.ytimg.com/vi/smVn7L2sTmg/maxresdefault.jpg"
-      ]
+      var wordsLeft, total, current, timer, start, transPercent, trans, progBar, id, randomInd, i;
+      console.log(text.getAll, images.getAll);
+      scope.text = text.getAll;
+      scope.images = images.getAll;
+      // var data = text.getAll;
+      // var images = images.getAll;
+      
       var currentGame = -1;
-      var currentNum = 1;
+      var currentNum = 0;
+          i = 0;
       // var len = data[currentGame].split(" ").length;
 
       var dispPastAvg = function(arr) {
@@ -56,11 +50,16 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       dispPastScores(); 
 
       //knuth's algorithm
-      var uniqueNums = function() {
+      var uniqueNums = function(arr) {
         var sortedNums = [1,2,3,4,5,6,7,8,9,10,11,12],
             n = sortedNums.length,
             temp,
             randomNum;
+
+        if (arr) {
+          sortedNums = arr;
+          n = sortedNums.length;
+        }
         
         while (n > 1) {
           randomNum = Math.floor(Math.random() * n);
@@ -75,12 +74,23 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       var blockIds = uniqueNums();
 
       var incrementGame = function() {
-        if (currentGame + 1 === data.length) {
-          currentGame = 0;
+        if (i + 1 === randomInd.length) {
+          currentGame = randomInd[0];
+          i++;
         } else {
-          currentGame++;
+          currentGame = randomInd[i];
+          i++;
         }
       }
+
+      var setOrder = function() {
+        var arr = [];
+        for (var i = 0; i < scope.text.length; i++) {
+          arr.push(i);
+        }
+
+        return uniqueNums(arr);
+      };
 
       var calcWPM = function(words,time) {
         var adjust = 60/time;
@@ -104,13 +114,13 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
           'border': '10px solid black',
           'border-radius': '6px',
           'position': 'relative',
-          'background': 'url('+images[currentGame]+')',
+          'background': 'url('+scope.images[currentGame]+')',
           'background-size': 'cover'
         };
       };  
 
       var hideBlock = function() {
-        var inc = data[currentGame].split(" ").length/12;
+        var inc = scope.text[currentGame].split(" ").length/12;
         if (currentNum % inc == 0) {
           console.log("inside hideBlock: ", blockIds, id)
           ele[0].querySelector('.b-'+blockIds[id]).style.display="none";
@@ -179,7 +189,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         resetBlock();
         updateData();
         resetBar();
-        scope.$apply();
+        // scope.$apply();
       };     
 
       var addPastScore = function() {
@@ -231,7 +241,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       };
 
       scope.resetGame = function() {
-        wordsLeft = data[currentGame].split(" ");
+        wordsLeft = scope.text[currentGame].split(" ");
         setCanvas();
         stopTimer();
         scope.createDisplay();
@@ -289,7 +299,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
             scope.errors++;
             textDisplay(false,true);
           }
-          scope.$digest();
+          // scope.$digest();
         } else if(current === scope.ans) {
 
           textDisplay(true,false);
@@ -297,7 +307,8 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       }); 
 
       scope.startOver = function() {
-        wordsLeft = data[currentGame].split(" ");
+        console.log("hideBlock",scope.text[currentGame], scope.text, currentGame, randomInd);
+        wordsLeft = scope.text[currentGame].split(" ");
         total = wordsLeft.length - 1;
         setCanvas();
         scope.createDisplay();
@@ -309,7 +320,8 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
       //initalizing function
       scope.startAgain = function(){
         incrementGame();
-        wordsLeft = data[currentGame].split(" ");
+        console.log("hideBlock",scope.text[currentGame], scope.text, currentGame);
+        wordsLeft = scope.text[currentGame].split(" ");
         total = wordsLeft.length - 1;
         setCanvas();
         scope.createDisplay();
@@ -318,6 +330,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", function($time
         textDisplay(false,false);   
       };
 
+      randomInd = setOrder();
       scope.startAgain(); 
     }
   }

@@ -8,6 +8,10 @@ body {
   width:100%;
 }
 
+.hide {
+  opacity: 0;
+}
+
 .title {
   font-size: 1.7em;
 }
@@ -225,6 +229,13 @@ nav.landingNav {
 .block {
   height:132px;
   background-color:black;
+  opacity: 1;
+}
+
+.block:not(.hide) {
+  transition: opacity .3s ease-in-out;
+  -moz-transition: opacity .3s ease-in-out;
+  -webkit-transition: opacity .3s ease-in-out;
 }
 
 .tall-input {

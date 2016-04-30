@@ -123,19 +123,23 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         var inc = scope.text[currentGame].split(" ").length/12;
         if (currentNum % inc == 0) {
           console.log("inside hideBlock: ", blockIds, id)
-          ele[0].querySelector('.b-'+blockIds[id]).style.display="none";
+          ele[0].querySelector('.b-'+blockIds[id]).style.opacity = "0";
           id++;
         }
         currentNum++;
       }
 
-      var blockDisplay = function(num) {
-        ele[0].querySelector('.b-'+num).style.display="inline";
-      };
-
       var resetBlock = function() {
         for (var i = 1; i <= 12; i++) {
-          blockDisplay(i);
+          ele[0].querySelector('.b-'+i).classList.remove('block');
+          ele[0].querySelector('.b-'+i).style.opacity = "1";;
+          ele[0].querySelector('.b-'+i).classList.add('block');
+        }
+
+        return {
+          then : function(fn) {
+            fn();
+          }
         }
       };
 
@@ -186,9 +190,14 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         scope.disable = true;
         scope.gameOver = false;
         scope.gameDisplay = true;
-        resetBlock();
         updateData();
         resetBar();
+        resetBlock().then(function() {
+          // make sure transition to cover canvas has completed
+          setTimeout(function() {
+            setCanvas();
+          }, 300);  
+        });
         // scope.$apply();
       };     
 
@@ -242,7 +251,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
 
       scope.resetGame = function() {
         wordsLeft = scope.text[currentGame].split(" ");
-        setCanvas();
+        // setCanvas();
         stopTimer();
         scope.createDisplay();
         scope.centerNumLet = false;
@@ -274,7 +283,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         },1000);       
       };
 
-      ele.bind("keyup", function(evt){
+      ele.bind("keydown", function(evt){
         //check if spacebar is pressed
         if (evt.keyCode == 32) {
           //if the last word has been entered correctly
@@ -310,7 +319,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         console.log("hideBlock",scope.text[currentGame], scope.text, currentGame, randomInd);
         wordsLeft = scope.text[currentGame].split(" ");
         total = wordsLeft.length - 1;
-        setCanvas();
+        // setCanvas();
         scope.createDisplay();
         scope.centerNumLet = false;
         calcTrans(wordsLeft.length);
@@ -323,7 +332,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         console.log("hideBlock",scope.text[currentGame], scope.text, currentGame);
         wordsLeft = scope.text[currentGame].split(" ");
         total = wordsLeft.length - 1;
-        setCanvas();
+        // setCanvas();
         scope.createDisplay();
         scope.centerNumLet = false;
         calcTrans(wordsLeft.length);

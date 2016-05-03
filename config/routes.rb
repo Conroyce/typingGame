@@ -6,6 +6,14 @@ Rails.application.routes.draw do
   # root 'welcome#index'
   resources :games
 
+  resources :users, defaults: {format: :json}
+
+  get "/log-in" => "sessions#new"
+
+  post "/log-in" => "sessions#create"
+
+  get "/log-out" => "sessions#destroy", as: :log_out
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

@@ -1,0 +1,44 @@
+app.directive("signInDirective", ["$timeout", "$interval", "$http", "User", "$location", function($timeout, $interval, $http, User, $location) {
+  return {
+    templateUrl: "<%= asset_path('templates/directives/sign_in_template.html') %>",
+    link: function(scope, ele, attr) {
+    	console.log("in sign in directive", User, User.query);
+
+
+    	scope.signIn = function() {
+    		console.log("test");
+    	};
+
+    	scope.createAcct = function(username,email, password) {
+    		console.log("create accnt", email, password);
+    		var user = new User({
+    			email: email, 
+    			password: password,
+    			username: username
+    		});
+    		console.log("user", user);
+    		user.$save(function(resp, responseHeaders) {
+    			console.log("inside user ", user);
+    			if (resp.status != "fail") {
+    				localStorage.setItem('user', username);
+    				$location.path('/');
+    			}
+    		})
+    		// var request = {
+    		// 	method: "POST",
+    		// 	url: "/users",
+    		// 	data: $.param({
+    		// 		username: scope.username,
+    		// 		password: scope.password
+    		// 	})
+    		// };
+
+    		// $http(request).then(function(data) {
+    		// 	console.log("success!", data);
+    		// }, function(err) {
+    		// 	console.log("err ", err);
+    		// })
+    	};
+    }
+  }
+}]);  	

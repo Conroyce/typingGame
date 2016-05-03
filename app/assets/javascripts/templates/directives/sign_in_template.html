@@ -1,0 +1,47 @@
+<div ng-controller="SignInCtrl">
+	<nav class="navbar mainNav">
+	  <div class="container">
+	    <a href="/#/landing" class="navbar-brand title">TypeAnimator</a>
+	    <div id="navbar" class="navbar-collapse collapse">
+	      <ul class="nav navbar-nav">
+	        <li><a href="/#/" class="nav-link">Game</a></li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li>
+	 					<a href="/#/signIn" class="nav-link">Sign In</a></li>
+	        </li>
+	      </ul>
+	    </div>  
+	  </div> 
+	</nav>
+	<div class="container">
+
+	  <form class="form-signin" id="signInForm" ng-hide="signUp">
+	    <h2 class="form-signin-heading">Sign in</h2>
+	    <label for="inputEmail" class="sr-only">Email address</label>
+	    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+	    <label for="inputPassword" class="sr-only">Password</label>
+	    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+	    <div class="checkbox">
+	      <label>
+	        <input type="checkbox" value="remember-me"> Remember me
+	      </label>
+	    </div>
+	    <button class="btn btn-lg btn-primary btn-block" ng-click="signIn()" type="submit">Sign in</button>
+	  	<div>Don't have an account? <a ng-click="signUp=true">Sign up</a></div>
+	  </form>
+
+	  <form class="form-signin" id="signInForm" ng-show="signUp">
+	    <h2 class="form-signin-heading">Create Account</h2>
+	    <label for="username" class="sr-only">Username</label>
+	    <input type="input" id="username" ng-model="username" class="form-control" placeholder="Username" required autofocus>
+	    <label for="inputEmail" class="sr-only">Email address</label>
+	    <input type="email" id="inputEmail" ng-model="email" class="form-control" placeholder="Email address" required autofocus>
+	    <label for="inputPassword" class="sr-only">Password</label>
+	    <input type="password" id="inputPassword" ng-model="password" class="form-control" placeholder="Password" required>
+	    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="createAcct(username, email, password)">Create</button>
+	    <div>Already have an account? <a ng-click="signUp=false">Sign in</a></div>
+	  </form>
+
+	</div> <!-- /container -->
+</div>

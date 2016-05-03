@@ -194,7 +194,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         resetBar();
         resetBlock().then(function() {
           // make sure transition to cover canvas has completed
-          setTimeout(function() {
+          $timeout(function() {
             setCanvas();
           }, 300);  
         });

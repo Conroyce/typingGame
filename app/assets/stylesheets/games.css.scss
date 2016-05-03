@@ -69,19 +69,21 @@ body {
   height: 70px;
 }
 
-.navbar a {
-  margin-top:10px;
-  color: #fff;
-}
+.navbar {
+  a {
+    margin-top:10px;
+    color: #fff;
 
-.navbar a.nav-link {
-  font-size:1.3em;
-  margin-top:12px;
-}
+    &.nav-link {
+      font-size:1.3em;
+      margin-top:12px;
+    }
 
-.navbar a.nav-link:hover {
-  color:#444;
-  background-color:rgba(0,0,0,0)
+    &.nav-link:hover {
+      color:#444;
+      background-color:rgba(0,0,0,0)
+    }
+  }
 }
 
 .land-img {

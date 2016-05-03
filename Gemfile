@@ -7,12 +7,17 @@ gem 'twitter-bootstrap-rails'
 gem 'd3-rails'
 
 gem 'rails'
+
+gem 'bcrypt'
+gem 'bcrypt-ruby','~>3.1.5',require:'bcrypt'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
 gem 'sass-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier'
+
+gem 'pry-byebug'
 # Use CoffeeScript for .js.coffee assets and views
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby

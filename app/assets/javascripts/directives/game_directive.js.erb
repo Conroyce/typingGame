@@ -4,9 +4,10 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
     link: function(scope, ele, attr) {
 
       var wordsLeft, total, current, timer, start, transPercent, trans, progBar, id, randomInd, i;
-      console.log(text.getAll, images.getAll);
+      // console.log(text.getAll, images.getAll);
       scope.text = text.getAll;
       scope.images = images.getAll;
+      scope.username = localStorage.getItem('user');
       // var data = text.getAll;
       // var images = images.getAll;
       
@@ -27,7 +28,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
           return prev + cur;
         });
 
-        console.log(sum, arr.length, parsedArr)
+        // console.log(sum, arr.length, parsedArr)
         return (sum/parsedArr.length).toFixed(1);
       }
 
@@ -122,7 +123,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
       var hideBlock = function() {
         var inc = scope.text[currentGame].split(" ").length/12;
         if (currentNum % inc == 0) {
-          console.log("inside hideBlock: ", blockIds, id)
+          // console.log("inside hideBlock: ", blockIds, id)
           ele[0].querySelector('.b-'+blockIds[id]).style.opacity = "0";
           id++;
         }
@@ -202,13 +203,13 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
       };     
 
       var addPastScore = function() {
-        console.log("wpm: ",scope.wpm);
+        // console.log("wpm: ",scope.wpm);
         if (!localStorage.scores) {
           localStorage.scores = scope.wpm + ",";
-          console.log("first score: ", localStorage.scores);
+          // console.log("first score: ", localStorage.scores);
         } else {
           localStorage.scores += scope.wpm + ",";
-          console.log("many scores: ", localStorage.scores);
+          // console.log("many scores: ", localStorage.scores);
         }
         dispPastScores();
       };   
@@ -287,7 +288,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         //check if spacebar is pressed
         if (evt.keyCode == 32) {
           //if the last word has been entered correctly
-          console.log("current: ",current, "scope.ans: ", scope.ans); 
+          // console.log("current: ",current, "scope.ans: ", scope.ans); 
           if (current === scope.ans && total == scope.log.length) {
             hideBlock();
             stopTimer();
@@ -295,7 +296,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
           //if word is entered correctly 
           } else if (current === scope.ans) {  
             trans -= transPercent;
-            console.log("inside correct word")
+            // console.log("inside correct word")
             adjBar();
             scope.log.push(scope.ans);
             updateData();
@@ -316,7 +317,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
       }); 
 
       scope.startOver = function() {
-        console.log("hideBlock",scope.text[currentGame], scope.text, currentGame, randomInd);
+        // console.log("hideBlock",scope.text[currentGame], scope.text, currentGame, randomInd);
         wordsLeft = scope.text[currentGame].split(" ");
         total = wordsLeft.length - 1;
         // setCanvas();
@@ -329,7 +330,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
       //initalizing function
       scope.startAgain = function(){
         incrementGame();
-        console.log("hideBlock",scope.text[currentGame], scope.text, currentGame);
+        // console.log("hideBlock",scope.text[currentGame], scope.text, currentGame);
         wordsLeft = scope.text[currentGame].split(" ");
         total = wordsLeft.length - 1;
         // setCanvas();

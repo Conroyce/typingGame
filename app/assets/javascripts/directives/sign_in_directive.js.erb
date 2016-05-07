@@ -1,12 +1,36 @@
-app.directive("signInDirective", ["$timeout", "$interval", "$http", "User", "$location", function($timeout, $interval, $http, User, $location) {
+app.directive("signInDirective", ["$timeout", "$interval", "$http", "User", "$location", "Session", 
+	function($timeout, $interval, $http, User, $location, Session) {
   return {
     templateUrl: "<%= asset_path('templates/directives/sign_in_template.html') %>",
     link: function(scope, ele, attr) {
     	console.log("in sign in directive", User, User.query);
+    	console.log("Session ", Session);
+    	scope.user = localStorage.user;
 
-
-    	scope.signIn = function() {
+    	scope.signIn = function(email,pw) {
     		console.log("test");
+    		var session = new Session.login({
+    			email: email,
+    			password: pw
+    		});
+    		session.$save(function(resp) {
+    			console.log("resp ", resp);
+    			if (resp.status != "fail") {
+    				console.log("user " ,resp.user);
+    				localStorage.setItem('user', resp.user);
+    				$location.path('/');
+    			}
+    		});
+    	};
+
+    	scope.signOut = function() {
+    		var session = new Session.logout.get(function(res) {
+    			console.log("res ", res);
+    			if (res.status != "fail") {
+    				localStorage.removeItem('user');
+    				$location.path('/landing');
+    			}	
+    		})	
     	};
 
     	scope.createAcct = function(username,email, password) {

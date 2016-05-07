@@ -1,0 +1,16 @@
+app.factory('Session',['$resource',function($resource) {
+  var login = $resource(
+    "/log-in",
+    {id: "@id"}
+  );
+
+  var logout = $resource(
+    "/log-out",
+    {id: "@id"}
+  );
+
+  return {
+  	login: login,
+  	logout: logout
+  }
+}]);

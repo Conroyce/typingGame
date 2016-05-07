@@ -8,7 +8,8 @@
 	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
 	        <li>
-	 					<a href="/#/signIn" class="nav-link">Sign In</a></li>
+	 					<a ng-hide="user" href="/#/signIn" class="nav-link">Sign In</a>
+	 					<a ng-show="user" class="nav-link">{{user}}</a>
 	        </li>
 	      </ul>
 	    </div>  
@@ -16,22 +17,22 @@
 	</nav>
 	<div class="container">
 
-	  <form class="form-signin" id="signInForm" ng-hide="signUp">
+	  <form class="form-signin" id="signInForm" ng-hide="signUp || user">
 	    <h2 class="form-signin-heading">Sign in</h2>
 	    <label for="inputEmail" class="sr-only">Email address</label>
-	    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+	    <input type="email" ng-model="signInEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
 	    <label for="inputPassword" class="sr-only">Password</label>
-	    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+	    <input type="password" ng-model="signInPw" id="inputPassword" class="form-control" placeholder="Password" required>
 	    <div class="checkbox">
 	      <label>
 	        <input type="checkbox" value="remember-me"> Remember me
 	      </label>
 	    </div>
-	    <button class="btn btn-lg btn-primary btn-block" ng-click="signIn()" type="submit">Sign in</button>
+	    <button class="btn btn-lg btn-primary btn-block" ng-click="signIn(signInEmail, signInPw)" type="submit">Sign in</button>
 	  	<div>Don't have an account? <a ng-click="signUp=true">Sign up</a></div>
 	  </form>
 
-	  <form class="form-signin" id="signInForm" ng-show="signUp">
+	  <form class="form-signin" id="signInForm" ng-show="signUp && !user">
 	    <h2 class="form-signin-heading">Create Account</h2>
 	    <label for="username" class="sr-only">Username</label>
 	    <input type="input" id="username" ng-model="username" class="form-control" placeholder="Username" required autofocus>
@@ -43,5 +44,9 @@
 	    <div>Already have an account? <a ng-click="signUp=false">Sign in</a></div>
 	  </form>
 
+	  <form class="form-signin" id="signInForm" ng-show="user">
+	  	<h2>Hello {{user}}</h2>
+	  	<button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="signOut();">Sign out</button>
+	  </form>
 	</div> <!-- /container -->
 </div>

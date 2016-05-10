@@ -3,7 +3,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
     templateUrl: "<%= asset_path('templates/directives/game_template.html') %>",
     link: function(scope, ele, attr) {
 
-      var wordsLeft, total, current, timer, start, transPercent, trans, progBar, id, randomInd, i;
+      var wordsLeft, total, current, timer, start, transPercent, trans, progBar, id, randomInd, i, remaining, inc;
       // console.log(text.getAll, images.getAll);
       scope.text = text.getAll;
       scope.images = images.getAll;
@@ -82,6 +82,8 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
           currentGame = randomInd[i];
           i++;
         }
+        // reset current number count.
+        currentNum = 0;
       }
 
       var setOrder = function() {
@@ -120,12 +122,29 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         };
       };  
 
-      var hideBlock = function() {
-        var inc = scope.text[currentGame].split(" ").length/12;
-        if (currentNum % inc == 0) {
+      // determine how many words need to be completed in order to hide a block
+      var calcBlocks = function() {
+        var text = scope.text[currentGame].split(" ");
+        remaining = text.length % 12;
+        inc = (text.length - remaining)/12;
+        console.log("calcBlocks ", text, inc, remaining);
+      };
+
+      var hideBlock = function(end) {
+        var int = inc;
+        // have base increment number, if there are remainders, we will increase increment number by 1.
+        if (remaining) {
+          int++;
+        }
+
+        console.log("hideBlock ", int, remaining, currentNum);
+        if (currentNum % int == 0 && currentNum > 0) {
+          remaining ? remaining-- : "";
           // console.log("inside hideBlock: ", blockIds, id)
           ele[0].querySelector('.b-'+blockIds[id]).style.opacity = "0";
           id++;
+        } else if (end) {
+          ele[0].querySelector('.b-'+blockIds[id]).style.opacity = "0";
         }
         currentNum++;
       }
@@ -222,6 +241,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
       var ending = function() {
         var totalTime = (new Date - start)/1000;
         stopTimer();
+        hideBlock(true);
         scope.ans = "";
         scope.disable = true;
         scope.gameOver = true;
@@ -276,8 +296,9 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
             scope.disable = false;
             textDisplay(true,false);
             startTimer();
-            scope.$apply();
-            ele[0].querySelector('.text-type').focus();
+            $timeout(function() {
+              ele[0].querySelector('.text-type').focus();
+            });  
           } else {
             scope.countDown--;
           }
@@ -309,7 +330,6 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
             scope.errors++;
             textDisplay(false,true);
           }
-          // scope.$digest();
         } else if(current === scope.ans) {
 
           textDisplay(true,false);
@@ -320,7 +340,6 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         // console.log("hideBlock",scope.text[currentGame], scope.text, currentGame, randomInd);
         wordsLeft = scope.text[currentGame].split(" ");
         total = wordsLeft.length - 1;
-        // setCanvas();
         scope.createDisplay();
         scope.centerNumLet = false;
         calcTrans(wordsLeft.length);
@@ -331,9 +350,9 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
       scope.startAgain = function(){
         incrementGame();
         // console.log("hideBlock",scope.text[currentGame], scope.text, currentGame);
+        calcBlocks();
         wordsLeft = scope.text[currentGame].split(" ");
         total = wordsLeft.length - 1;
-        // setCanvas();
         scope.createDisplay();
         scope.centerNumLet = false;
         calcTrans(wordsLeft.length);

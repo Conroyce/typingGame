@@ -13,6 +13,10 @@ var app = angular.module("TypingGame",["ngRoute","ngResource"])
         templateUrl: "<%= asset_path('templates/views/sign_in.html') %>",
         controller: "SignInCtrl"
       })
+      .when("/profile", {
+        templateUrl: "<%= asset_path('templates/views/profile.html') %>",
+        controller: "ProfileCtrl"
+      })
       .otherwise({
         redirectTo: "/"
       });

@@ -1,0 +1,10 @@
+app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$location", "Session", 
+	function($timeout, $interval, $http, User, $location, Session) {
+		console.log("profile directive!")
+		return {
+			templateUrl: "<%= asset_path('templates/directives/profile_template.html') %>",
+			link: function(scope, ele, attr) {
+				scope.user = localStorage.user;
+			}
+		}
+	}]);	

@@ -12,12 +12,12 @@ class UsersController < ApplicationController
     	@user = User.new(user_params)
       # binding.pry
     	if @user.save
-    		render :json => {:status => "success"}
+    		render :json => {:status => "success", :data => @user}
     	else
     		render :json => {:status => "fail"}, status: :bad_request
     	end	
     else
-      render :json => {:status => "already exists"}
+      render :json => {:status => "already exists", :data => @user}
     end    	
   end	
 

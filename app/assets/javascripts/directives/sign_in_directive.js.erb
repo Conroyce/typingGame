@@ -17,7 +17,7 @@ app.directive("signInDirective", ["$timeout", "$interval", "$http", "User", "$lo
     			console.log("resp ", resp);
     			if (resp.status != "fail") {
     				console.log("user " ,resp.user);
-    				localStorage.setItem('user', resp.user);
+    				localStorage.setItem('user', angular.toJson(resp.user));
     				$location.path('/');
     			}
     		});

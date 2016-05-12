@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
-  root 'games#index'
+  root 'games#root'
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
-  resources :games
 
-  resources :users, defaults: {format: :json}
+  resources :users, defaults: {format: :json} do
+    resources :games
+  end  
 
   get "/log-in" => "sessions#new"
 

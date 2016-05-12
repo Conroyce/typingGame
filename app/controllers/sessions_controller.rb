@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
 		#let the user know they've been logged in with a flash message
 			#most important part
 			session[:user_id] = @user.id
-			render :json => {:status => "success", :user => @user[:username]}
+			render :json => {:status => "success", :user => @user}
 		else
 			#user isnt in db or incorrect pw
 			render :json => {:status => "fail"}

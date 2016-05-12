@@ -1,0 +1,7 @@
+app.factory('Game',['$resource','User',function($resource, User) {
+  return $resource(
+    "/users/:user_id/games/:id",
+    {user_id: "@user_id", id: "@id"},
+    {update: {method: "PATCH"}}
+  );
+}]);

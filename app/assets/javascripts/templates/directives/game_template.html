@@ -7,10 +7,10 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-          <a ng-hide="username" href="/#/signIn" class="nav-link">Sign In</a>
-          <a ng-show="username" href="/#/profile" class="nav-link">{{username}}</a>
+          <a ng-hide="user" href="/#/signIn" class="nav-link">Sign In</a>
+          <a ng-show="user" href="/#/profile" class="nav-link">{{user.username}}</a>
         </li>
-        <li ng-show="username">
+        <li ng-show="user">
           <a href="/#/signIn" class="nav-link">Sign Out</a>
         </li>
       </ul>

@@ -1,4 +1,4 @@
-app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "text", function($timeout, $interval, $http, images, text) {
+app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "text", "Game", function($timeout, $interval, $http, images, text, Game) {
   return {
     templateUrl: "<%= asset_path('templates/directives/game_template.html') %>",
     link: function(scope, ele, attr) {
@@ -7,9 +7,13 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
       // console.log(text.getAll, images.getAll);
       scope.text = text.getAll;
       scope.images = images.getAll;
-      scope.username = localStorage.getItem('user');
+      scope.user = angular.fromJson(localStorage.getItem('user'));
       // var data = text.getAll;
       // var images = images.getAll;
+      // console.log("game ", Game, Game.user_id);
+      // Game.get({id:19}, function(games) {
+        // console.log('games ', games);
+      // });
       
       var currentGame = -1;
       var currentNum = 0;

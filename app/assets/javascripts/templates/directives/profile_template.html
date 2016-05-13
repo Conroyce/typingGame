@@ -28,8 +28,24 @@
 		    <input type="radio" autocomplete="off" id="night"> Night Theme
 		  </label>
 		</div>
+		<div class="btn-group" data-toggle="buttons">
+		  <label class="btn btn-primary active" ng-click="showWPM=false">
+		    <input type="radio" autocomplete="off" id="day"> WPM
+		  </label>
+		  <label class="btn btn-primary" ng-click="showWPM=true">
+		    <input type="radio" autocomplete="off" id="night"> Accuracy
+		  </label>
+		</div>
 
 		<div id="graph-container" ng-class="{day: !night, night: night}">
+			<div id="wpm" ng-hide="showWPM"></div>
+			<div id="accuracy" ng-show="showWPM"></div>
 		</div>
+		<!-- <div ng-if="data.length < 5">
+			<h2></h2>
+		</div> -->
+	</div>
+	<div class="container" ng-show="data.length < 5">
+		<h2>Not enough games played to display graph.</h2>
 	</div>
 </div>

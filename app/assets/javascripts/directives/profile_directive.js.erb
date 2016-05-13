@@ -6,17 +6,19 @@ app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$l
 			link: function(scope, ele, attr) {
 				scope.user = angular.fromJson(localStorage.user);
 				Game.get({user_id:scope.user.id}, function(resp) {
-					console.log("Games ", resp.data);
+					resp.data.forEach(function(v) { v.accuracy = parseFloat(v.accuracy); });
 					var data = resp.data;
+					scope.data = data;
+					// console.log("Games ", data);
 
-					function hexToRgb(hex) {
-					    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-					    return result ? "rgb(" +
-					        parseInt(result[1], 16) + ", " +
-					        parseInt(result[2], 16) + ", " +
-					        parseInt(result[3], 16) + ")"
-					      : null;
-					}
+					var hexToRgb = function(hex) {
+				    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+				    return result ? "rgb(" +
+				        parseInt(result[1], 16) + ", " +
+				        parseInt(result[2], 16) + ", " +
+				        parseInt(result[3], 16) + ")"
+				      : null;
+					};
 
 					var margin = {top: 50, right: 50, bottom: 55, left: 55},
 					    width = parseInt(d3.select('#graph-container').style('width'), 10),
@@ -42,65 +44,74 @@ app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$l
 					    .scale(y)
 					    .orient("left");
 
-					var line = d3.svg.line()
-					    .x(function(d) { return x(d.id); })
-					    .y(function(d) { return y(d.score); });
-
-					var svg = d3.select("#graph-container").append("svg")
-					    .attr("width", width + margin.left + margin.right)
-					    .attr("height", height + margin.top + margin.bottom)
-					  .append("g")
-					    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 					var green = "rgb(152,223,138)";
 					var orange = "rgb(255, 127, 14)";
-					  // Add the valueline path.
-					  // svg.append("path")
-					  //   .attr("class", "line")
-					  //   .attr("d", valueline(data));
 
-					  x.domain(d3.extent(data, function(d) { return d.id; }));
-					  y.domain(d3.extent(data, function(d) { return d.score; }));
+					var graph = function(el,color, type, text) {
+						var line = d3.svg.line()
+						    .x(function(d) { return x(d.id); })
+						    .y(function(d) { return y(d[type]); });
 
-					  svg.append("g")
-					      .attr("class", "x axis")
-					      .attr("transform", "translate(0," + height + ")")
-					      .call(xAxis) 
-					    .append("text")
-					      .attr("x", 20)
-					      .attr("dy", "3em")
-					      .attr("dx", "45%")
-					      .style("text-anchor", "middle")
-					      .text("Game");  
-					    
+						var svg = d3.select(el).append("svg")
+						    .attr("width", width + margin.left + margin.right)
+						    .attr("height", height + margin.top + margin.bottom)
+						  .append("g")
+						    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-					  svg.append("g")
-					      .attr("class", "y axis")
-					      .call(yAxis)
-					    .append("text")
-					      .attr("transform", "rotate(-90)")
-					      .attr("y", 6)
-					      .attr("dy", ".71em")
-					      .style("text-anchor", "end")
-					      .text("WPM");
+						  // Add the valueline path.
+						  // svg.append("path")
+						  //   .attr("class", "line")
+						  //   .attr("d", valueline(data));
 
-					  svg.append("path")
-					      .datum(data)
-					      .attr("class", "line")
-					      .attr("d", line);
+						  x.domain(d3.extent(data, function(d) { return d.id; }));
+						  y.domain(d3.extent(data, function(d) { return d[type]; }));
 
-					  svg.selectAll('circle')
-					    .data(data)
-					    .enter().append('circle')
-					    .attr('cx', function(d) {
-					      return x(d.id);
-					    })
-					    .attr('cy', function(d) {
-					      return y(d.score);
-					    })
-					    .attr('r', 5)
-					    .attr('class', 'node')
-					    .style('fill', green);
+						  svg.append("g")
+						      .attr("class", "x axis")
+						      .attr("transform", "translate(0," + height + ")")
+						      .call(xAxis) 
+						    .append("text")
+						      .attr("x", 20)
+						      .attr("dy", "3em")
+						      .attr("dx", "45%")
+						      .style("text-anchor", "middle")
+						      .text("Game");  
+						    
+
+						  svg.append("g")
+						      .attr("class", "y axis")
+						      .call(yAxis)
+						    .append("text")
+						      .attr("transform", "rotate(-90)")
+						      .attr("y", 6)
+						      .attr("dy", ".71em")
+						      .style("text-anchor", "end")
+						      .text(text);
+
+						  svg.append("path")
+						      .datum(data)
+						      .attr("class", "line")
+						      .attr("d", line);
+
+						  svg.selectAll('circle')
+						    .data(data)
+						    .enter().append('circle')
+						    .attr('cx', function(d) {
+						      return x(d.id);
+						    })
+						    .attr('cy', function(d) {
+						      return y(d[type]);
+						    })
+						    .attr('r', 5)
+						    .attr('class', 'node')
+						    .style('fill', color);
+					};
+
+					// only display if user has had at least 5 games
+					if (data.length >= 5) {
+						graph('#wpm', green, 'score', 'WPM');
+						graph('#accuracy', orange, 'accuracy', 'Accuracy(%)');
+					}	
 				});
 			}
 		}

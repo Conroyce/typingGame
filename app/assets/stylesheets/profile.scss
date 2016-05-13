@@ -1,0 +1,66 @@
+#graph-container {
+	text-align: center;
+	width: 100%;
+	display: inline-block;
+
+	&.day {
+		svg {
+			border: 1px solid #eee;
+		}	
+
+		.axis path,
+		.axis line {
+		  fill: none;
+		  stroke: #888;
+		  shape-rendering: crispEdges;
+		}
+
+		.x, .y {
+			stroke: #888;
+		}
+
+		.node {
+			stroke: #555;
+			stroke-width: 1.5px;
+		}
+
+		.line {
+		  fill: none;
+		  stroke: #bbb;
+		  stroke-width: 1.5px;
+		}
+	}
+
+	&.night {
+		svg {
+			background-color:#333;
+			border: none;
+		}	
+
+		.axis path,
+		.axis line {
+		  fill: none;
+		  stroke: #eee;
+		  shape-rendering: crispEdges;
+		}
+
+		.x, .y {
+			stroke: #eee;
+		}
+
+		.node {
+			stroke: #fff;
+			stroke-width: 1.5px;
+		}
+
+		.line {
+		  fill: none;
+		  stroke: #ddd;
+		  stroke-width: 1.5px;
+		}
+	}
+
+	svg {
+		border-radius: 4px;
+	}
+}

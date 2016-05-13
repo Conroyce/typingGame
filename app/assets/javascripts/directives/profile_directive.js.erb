@@ -1,10 +1,107 @@
-app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$location", "Session", 
-	function($timeout, $interval, $http, User, $location, Session) {
+app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$location", "Session", "Game", 
+	function($timeout, $interval, $http, User, $location, Session, Game) {
 		console.log("profile directive!")
 		return {
 			templateUrl: "<%= asset_path('templates/directives/profile_template.html') %>",
 			link: function(scope, ele, attr) {
-				scope.user = localStorage.user;
+				scope.user = angular.fromJson(localStorage.user);
+				Game.get({user_id:scope.user.id}, function(resp) {
+					console.log("Games ", resp.data);
+					var data = resp.data;
+
+					function hexToRgb(hex) {
+					    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+					    return result ? "rgb(" +
+					        parseInt(result[1], 16) + ", " +
+					        parseInt(result[2], 16) + ", " +
+					        parseInt(result[3], 16) + ")"
+					      : null;
+					}
+
+					var margin = {top: 50, right: 50, bottom: 55, left: 55},
+					    width = parseInt(d3.select('#graph-container').style('width'), 10),
+					    width = width - margin.left - margin.right,
+					    percent = d3.format('%'),
+					    height = 500 - margin.top - margin.bottom;
+
+					// var formatDate = d3.time.format("%d-%b-%y");
+					var color = d3.scale.category20();
+
+					var x = d3.time.scale()
+					    .range([0, width]);
+
+					var y = d3.scale.linear()
+					    .range([height, 0]);
+
+					var xAxis = d3.svg.axis()
+					    .scale(x)
+					    .orient("bottom")
+					    .tickFormat(d3.format(",.0f"));
+
+					var yAxis = d3.svg.axis()
+					    .scale(y)
+					    .orient("left");
+
+					var line = d3.svg.line()
+					    .x(function(d) { return x(d.id); })
+					    .y(function(d) { return y(d.score); });
+
+					var svg = d3.select("#graph-container").append("svg")
+					    .attr("width", width + margin.left + margin.right)
+					    .attr("height", height + margin.top + margin.bottom)
+					  .append("g")
+					    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+					var green = "rgb(152,223,138)";
+					var orange = "rgb(255, 127, 14)";
+					  // Add the valueline path.
+					  // svg.append("path")
+					  //   .attr("class", "line")
+					  //   .attr("d", valueline(data));
+
+					  x.domain(d3.extent(data, function(d) { return d.id; }));
+					  y.domain(d3.extent(data, function(d) { return d.score; }));
+
+					  svg.append("g")
+					      .attr("class", "x axis")
+					      .attr("transform", "translate(0," + height + ")")
+					      .call(xAxis) 
+					    .append("text")
+					      .attr("x", 20)
+					      .attr("dy", "3em")
+					      .attr("dx", "45%")
+					      .style("text-anchor", "middle")
+					      .text("Game");  
+					    
+
+					  svg.append("g")
+					      .attr("class", "y axis")
+					      .call(yAxis)
+					    .append("text")
+					      .attr("transform", "rotate(-90)")
+					      .attr("y", 6)
+					      .attr("dy", ".71em")
+					      .style("text-anchor", "end")
+					      .text("WPM");
+
+					  svg.append("path")
+					      .datum(data)
+					      .attr("class", "line")
+					      .attr("d", line);
+
+					  svg.selectAll('circle')
+					    .data(data)
+					    .enter().append('circle')
+					    .attr('cx', function(d) {
+					      return x(d.id);
+					    })
+					    .attr('cy', function(d) {
+					      return y(d.score);
+					    })
+					    .attr('r', 5)
+					    .attr('class', 'node')
+					    .style('fill', green);
+				});
 			}
 		}
 	}]);	

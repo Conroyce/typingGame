@@ -1,4 +1,5 @@
-app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "text", "Game", function($timeout, $interval, $http, images, text, Game) {
+app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "text", "Game", "User", 
+  function($timeout, $interval, $http, images, text, Game, User) {
   return {
     templateUrl: "<%= asset_path('templates/directives/game_template.html') %>",
     link: function(scope, ele, attr) {
@@ -10,15 +11,10 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
       scope.user = angular.fromJson(localStorage.getItem('user'));
       // var data = text.getAll;
       // var images = images.getAll;
-      // console.log("game ", Game, Game.user_id);
-      // Game.get({id:19}, function(games) {
-        // console.log('games ', games);
-      // });
       
       var currentGame = -1;
       var currentNum = 0;
           i = 0;
-      // var len = data[currentGame].split(" ").length;
 
       var dispPastAvg = function(arr) {
         var len = arr.length,
@@ -131,7 +127,6 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         var text = scope.text[currentGame].split(" ");
         remaining = text.length % 12;
         inc = (text.length - remaining)/12;
-        console.log("calcBlocks ", text, inc, remaining);
       };
 
       var hideBlock = function(end) {
@@ -141,7 +136,6 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
           int++;
         }
 
-        console.log("hideBlock ", int, remaining, currentNum);
         if (currentNum % int == 0 && currentNum > 0) {
           remaining ? remaining-- : "";
           // console.log("inside hideBlock: ", blockIds, id)
@@ -225,6 +219,18 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         // scope.$apply();
       };     
 
+      var saveGame = function() {
+        var game = new Game({
+          score: scope.wpm,
+          accuracy: scope.accuracy,
+          user_id: scope.user.id
+        });
+
+        game.$save(function(resp) {
+          console.log("saved ", resp);
+        })
+      };
+
       var addPastScore = function() {
         // console.log("wpm: ",scope.wpm);
         if (!localStorage.scores) {
@@ -234,6 +240,21 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
           localStorage.scores += scope.wpm + ",";
           // console.log("many scores: ", localStorage.scores);
         }
+
+        // new highscore
+        if (!scope.user.highScore || scope.user.highScore < scope.wpm) {
+          //update user with new highscore
+          User.update({id: scope.user.id, highScore: scope.wpm}, function(resp) {
+            console.log("resp ", resp);
+            if (resp.status == "success") {
+              alert("Congratulations! new high score");
+            }  
+          });
+        }
+
+        // save game
+        saveGame();
+
         dispPastScores();
       };   
 

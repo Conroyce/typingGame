@@ -5,7 +5,16 @@ class UsersController < ApplicationController
   end
 
   def new
-  end  
+  end
+
+  def show
+    @user = User.find(params[:id])
+    if @user
+      render :json => {:status => "success", :data => @user}
+    else
+      render :json => {:status => "fail"}
+    end
+  end      
 
   def create
     if User.find_by(username: user_params[:username]) == nil
@@ -19,7 +28,17 @@ class UsersController < ApplicationController
     else
       render :json => {:status => "already exists", :data => @user}
     end    	
-  end	
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update_attribute(:highScore, params[:highScore])
+      render :json => {:status => "success", :data => @user}
+    else
+      render :json => {:status => "fail"}
+    end  
+
+  end  
 
   def user_params
   	params.permit(:email, :password, :username)

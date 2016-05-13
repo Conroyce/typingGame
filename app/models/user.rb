@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
 	has_many :games
 
 	def encrypt_password
-		binding.pry
     self.password_salt = BCrypt::Engine.generate_salt
     self.password_hash = BCrypt::Engine.hash_secret(password,password_salt)
   end	

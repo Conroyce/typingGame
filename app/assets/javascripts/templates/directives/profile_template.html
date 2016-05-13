@@ -20,6 +20,16 @@
 	</nav>
 
 	<div class="container">
-		<p>Hey</p>
+		<div class="btn-group" data-toggle="buttons">
+		  <label class="btn btn-primary active" ng-click="night=false">
+		    <input type="radio" autocomplete="off" id="day"> Day Theme
+		  </label>
+		  <label class="btn btn-primary" ng-click="night=true">
+		    <input type="radio" autocomplete="off" id="night"> Night Theme
+		  </label>
+		</div>
+
+		<div id="graph-container" ng-class="{day: !night, night: night}">
+		</div>
 	</div>
 </div>

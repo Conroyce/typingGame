@@ -12,7 +12,6 @@ class GamesController < ApplicationController
   end	
 
   def create
-  	binding.pry
   	@user = User.find(params[:user_id])
   	@game = @user.games.create(game_params)
   	render :json => {:status => "success", :data => @game}

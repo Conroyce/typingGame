@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
 	def create
-		# binding.pry
+		binding.pry
 		#try to authenticate the user
 		@user = User.authenticate(params[:email], params[:password])
 		#if an instance is returned and @user is not nil

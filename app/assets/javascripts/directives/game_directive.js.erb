@@ -4,7 +4,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
     templateUrl: "<%= asset_path('templates/directives/game_template.html') %>",
     link: function(scope, ele, attr) {
 
-      var wordsLeft, total, current, timer, start, transPercent, trans, progBar, id, randomInd, i, remaining, inc;
+      var wordsLeft, total, current, timer, start, transPercent, trans, progBar, id, randomInd, i, remaining, initialRemaining, inc;
       // console.log(text.getAll, images.getAll);
       scope.text = text.getAll;
       scope.images = images.getAll;
@@ -13,7 +13,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
       // var images = images.getAll;
       
       var currentGame = -1;
-      var currentNum = 0;
+      var currentNum = 1;
           i = 0;
 
       var dispPastAvg = function(arr) {
@@ -83,7 +83,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
           i++;
         }
         // reset current number count.
-        currentNum = 0;
+        currentNum = 1;
       }
 
       var setOrder = function() {
@@ -126,6 +126,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
       var calcBlocks = function() {
         var text = scope.text[currentGame].split(" ");
         remaining = text.length % 12;
+        initialRemaining = text.length % 12;
         inc = (text.length - remaining)/12;
       };
 
@@ -136,12 +137,14 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
           int++;
         }
 
-        if (currentNum % int == 0 && currentNum > 0) {
+        console.log("inside hideBlock: ", blockIds, id, end, remaining, currentNum, int);
+        if (currentNum % int == 0) {
+          currentNum = remaining == 1 ? (currentNum - (int*initialRemaining)) : currentNum;
           remaining ? remaining-- : "";
-          // console.log("inside hideBlock: ", blockIds, id)
           ele[0].querySelector('.b-'+blockIds[id]).style.opacity = "0";
           id++;
         } else if (end) {
+          id--;
           ele[0].querySelector('.b-'+blockIds[id]).style.opacity = "0";
         }
         currentNum++;
@@ -242,12 +245,15 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         }
 
         // new highscore
+        console.log("score ", scope.user.highScore, scope.wpm);
         if (!scope.user.highScore || scope.user.highScore < scope.wpm) {
           //update user with new highscore
           User.update({id: scope.user.id, highScore: scope.wpm}, function(resp) {
             console.log("resp ", resp);
             if (resp.status == "success") {
               alert("Congratulations! new high score");
+              localStorage.setItem('user', angular.toJson(resp.data));
+              scope.user = resp.data;
             }  
           });
         }
@@ -386,6 +392,10 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
 
       randomInd = setOrder();
       scope.startAgain(); 
+
+      // $http.get('chart.tracks.get?page=1&page_size=5&f_has_lyrics=1').then(function(data) {
+      //   console.log('data', data);
+      // })
     }
   }
 }]);

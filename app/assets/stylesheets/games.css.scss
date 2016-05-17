@@ -59,6 +59,11 @@ body {
   left:36%;
 }
 
+#canvas {
+  border-radius: 6px;
+  border: 10px solid black;
+}
+
 .bigger-text {
   font-size:1.5em;
 }
@@ -91,6 +96,7 @@ body {
   background:url('http://365psd.com/images/previews/e55/5-blurred-backgrounds-image-2012Part-1-Background-5-without-Glare.jpg');
   height: 80vh;
   margin-top:-50px;
+  z-index: -10;
 }
 
 .land-img1,
@@ -101,8 +107,8 @@ body {
 }
 
 .land-img1 {
-  margin: 40px auto;
-  margin-top:90px;
+  margin: 33px auto;
+  margin-top:87px;
 }
 
 .land-img2 {
@@ -143,6 +149,14 @@ body {
 
 nav.landingNav {
   background-color: #000;
+
+  a.nav-link:hover {
+    color: #FDBD4D;
+  }
+
+  a.navbar-brand:hover {
+    color: #FDBD4D;
+  }
 }
 
 .landingNav a {
@@ -298,4 +312,85 @@ div.bar {
 
 .space-right-1 {
   margin-right:10px;
+}
+
+
+/*******
+** MEDIA QUERIES
+*******/
+
+@media (min-width:776px) and (max-width: 1200px) {
+  .row-solo {
+    .col-xs-2 {
+      width: 6.6666667%;
+    }
+
+    .col-xs-6 {
+      width: 60%;
+    }
+  }  
+}
+
+@media (max-width: 775px) {
+  .row-solo {
+    .col-xs-2 {
+      display: none;
+    }
+
+    .col-xs-6 {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .big-text, .tall-input {
+      width: 80%;
+      margin: 0 auto 10px auto;
+    }
+  }
+
+  .mainNav {
+    margin-bottom: 0;
+  }
+
+  .recentScores {
+    width: 100%
+  }
+
+  #canvas {
+    border-radius: 0;
+    border: 0;
+  }
+
+  .block {
+    height: 134px;
+  }
+
+  .canvasDiv {
+    margin-top: 0;
+  }
+
+  .collapse {
+    display: inherit;
+  }
+
+  .nav {
+    position: absolute;
+    top: 20px;
+
+    &>li {
+      display: inline;
+
+      &>a {
+        display: inline;
+      }
+    }
+
+    &.game-tag {
+      left: 200px;
+    }
+
+    &.account-tag {
+      right: 50px;
+    }
+  }  
 }

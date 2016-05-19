@@ -6,21 +6,36 @@ app.directive("signInDirective", ["$timeout", "$interval", "$http", "User", "$lo
     	console.log("in sign in directive", User, User.query);
     	console.log("Session ", Session);
     	scope.user = localStorage.user;
+        var savedUser = angular.fromJson(localStorage.getItem('savedUser'));
+        if (savedUser) {
+            scope.savedUser = savedUser;
+        }
 
-    	scope.signIn = function(email,pw) {
+    	scope.logIn = function(email,pw) {
     		console.log("test");
-    		var session = new Session.login({
-    			email: email,
-    			password: pw
-    		});
-    		session.$save(function(resp) {
-    			console.log("resp ", resp);
-    			if (resp.status != "fail") {
-    				console.log("user " ,resp.user);
-    				localStorage.setItem('user', angular.toJson(resp.user));
-    				$location.path('/');
-    			}
-    		});
+            if (savedUser) {
+                scope.user = scope.savedUser;
+                localStorage.setItem('user', angular.toJson(savedUser));
+                $location.path('/');
+            } else {
+        		var session = new Session.login({
+        			email: email,
+        			password: pw
+        		});
+        		session.$save(function(resp) {
+        			console.log("resp ", resp);
+        			if (resp.status != "fail") {
+        				console.log("user " ,resp.user);
+                        if ($('input[type="checkbox"]:checked').length) {
+                            localStorage.setItem('savedUser', angular.toJson(resp.user));
+                        }
+        				localStorage.setItem('user', angular.toJson(resp.user));
+        				$location.path('/');
+        			} else {
+                        alert("Incorrect Username or Password");
+                    }
+        		});
+            }   
     	};
 
     	scope.signOut = function() {
@@ -48,21 +63,12 @@ app.directive("signInDirective", ["$timeout", "$interval", "$http", "User", "$lo
     				$location.path('/');
     			}
     		})
-    		// var request = {
-    		// 	method: "POST",
-    		// 	url: "/users",
-    		// 	data: $.param({
-    		// 		username: scope.username,
-    		// 		password: scope.password
-    		// 	})
-    		// };
-
-    		// $http(request).then(function(data) {
-    		// 	console.log("success!", data);
-    		// }, function(err) {
-    		// 	console.log("err ", err);
-    		// })
     	};
+
+        scope.clearSaved = function() {
+            scope.savedUser = "";
+            localStorage.removeItem('savedUser');
+        };
     }
   }
 }]);  	

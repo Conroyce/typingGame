@@ -8,7 +8,11 @@
         </ul>
         <ul class="nav navbar-nav navbar-right account-tag">
           <li>
-            <a href="/#/signIn" class="nav-link">Sign In</a></li>
+            <a ng-hide="user" href="/#/signIn" class="nav-link">Sign In</a>
+            <a ng-show="user" href="/#/profile" class="nav-link">{{user.username}}</a>
+          </li>
+          <li ng-show="user">
+            <a href="#" ng-click="signOut()" class="nav-link">Sign Out</a>
           </li>
         </ul>
       </div>  
@@ -56,7 +60,7 @@
     </div>
   </div>
 </div>
-<div class="row land-third row-solo">
+<!-- <div class="row land-third row-solo">
   <div class="container">
     <h2 class="centered">Become The Best</h2>
     <div class="row">
@@ -74,15 +78,15 @@
       </div>
     </div>
   </div>
-</div> 
+</div>  -->
 <div class="row land-footer centered row-solo">
-  <ul>
+ <!--  <ul>
     <li><a href="#">About |</a></li>
     <li><a href="#">Contact |</a></li>
     <li><a href="#">FAQ |</a></li>
     <li><a href="#">Help</a></li>
-  </ul>
+  </ul> -->
   <ul>
-    <li>TypingAnimator 2016</li>
+    <li>TypeAnimator 2016</li>
   </ul>
 </div> 

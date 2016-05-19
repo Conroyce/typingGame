@@ -1,8 +1,18 @@
-app.directive("landDirective", ["$http", "$window", function($http, $window) {
+app.directive("landDirective", ["$http", "$window", "$location", "Session", function($http, $window, $location, Session) {
   return {
     templateUrl: "<%= asset_path('templates/directives/land_template.html') %>",
     link: function(scope, ele, attr) {
+    	scope.user = angular.fromJson(localStorage.getItem('user'));
 
+    	scope.signOut = function() {
+    		var session = new Session.logout.get(function(res) {
+    			console.log("res ", res);
+    			if (res.status != "fail") {
+    				localStorage.removeItem('user');
+    				$location.path('/landing');
+    			}	
+    		})	
+    	};
     }
   }
 }]);

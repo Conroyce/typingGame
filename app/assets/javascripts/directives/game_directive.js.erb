@@ -242,22 +242,23 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
           // console.log("many scores: ", localStorage.scores);
         }
 
-        // new highscore
-        console.log("score ", scope.user.highScore, scope.wpm);
-        if (!scope.user.highScore || scope.user.highScore < scope.wpm) {
-          //update user with new highscore
-          User.update({id: scope.user.id, highScore: scope.wpm}, function(resp) {
-            console.log("resp ", resp);
-            if (resp.status == "success") {
-              alert("Congratulations! new high score");
-              localStorage.setItem('user', angular.toJson(resp.data));
-              scope.user = resp.data;
-            }  
-          });
-        }
-
-        // save game
-        saveGame();
+        if (scope.user) {
+          // new highscore
+          console.log("score ", scope.user.highScore, scope.wpm);
+          if (!scope.user.highScore || scope.user.highScore < scope.wpm) {
+            //update user with new highscore
+            User.update({id: scope.user.id, highScore: scope.wpm}, function(resp) {
+              console.log("resp ", resp);
+              if (resp.status == "success") {
+                alert("Congratulations! new high score");
+                localStorage.setItem('user', angular.toJson(resp.data));
+                scope.user = resp.data;
+              }  
+            });
+          }
+          // save game
+          saveGame();
+        }  
 
         dispPastScores();
       };   

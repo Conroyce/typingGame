@@ -18,6 +18,7 @@
 //= require angular
 //= require angular-resource
 //= require angular-route
+//= require d3-tip
 //= require app
 //= require_tree ./factories
 //= require_tree ./controllers

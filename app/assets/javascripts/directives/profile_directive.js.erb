@@ -1,15 +1,25 @@
 app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$location", "Session", "Game", 
 	function($timeout, $interval, $http, User, $location, Session, Game) {
-		console.log("profile directive!")
 		return {
 			templateUrl: "<%= asset_path('templates/directives/profile_template.html') %>",
 			link: function(scope, ele, attr) {
+				scope.toggleTheme = function() {
+					console.log("toggle", scope.day);
+					if (!scope.night) {
+						scope.night = true;
+						$('body').addClass('night');
+					} else {
+						scope.night = false;
+						$('body').removeClass('night');
+					}
+				};
+
 				scope.user = angular.fromJson(localStorage.user);
 				Game.get({user_id:scope.user.id}, function(resp) {
 					resp.data.forEach(function(v) { v.accuracy = parseFloat(v.accuracy); });
 					var data = resp.data;
 					scope.data = data;
-					// console.log("Games ", data);
+					console.log("Games ", data);
 
 					var hexToRgb = function(hex) {
 				    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -52,11 +62,16 @@ app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$l
 						    .x(function(d) { return x(d.id); })
 						    .y(function(d) { return y(d[type]); });
 
+						var tip = d3.tip()
+						  .attr('class', 'd3-tip')
+						  .html(function(d) { return '<p><span class="orange">Accuracy: </span>' + d.accuracy + '%</p><span class="green">WPM: </span>' + d.score; })    
+
 						var svg = d3.select(el).append("svg")
 						    .attr("width", width + margin.left + margin.right)
 						    .attr("height", height + margin.top + margin.bottom)
 						  .append("g")
-						    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+						    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+						    .call(tip);
 
 						  // Add the valueline path.
 						  // svg.append("path")
@@ -103,15 +118,28 @@ app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$l
 						      return y(d[type]);
 						    })
 						    .attr('r', 5)
+						    // .attr('data-toggle','tooltip')
+						    // .attr('data-placement','top')
+						    // .attr('title','test')
 						    .attr('class', 'node')
-						    .style('fill', color);
+						    .style('fill', color)
+						    .on('mouseover', tip.show)
+						    .on('mouseout', tip.hide);
+
 					};
 
 					// only display if user has had at least 5 games
 					if (data.length >= 5) {
 						graph('#wpm', green, 'score', 'WPM');
 						graph('#accuracy', orange, 'accuracy', 'Accuracy(%)');
-					}	
+					}
+
+					$(function () {
+					  $('[data-toggle="tooltip"]').tooltip({
+					  	'container':'body',
+					  	'placement':'top'
+					  });
+					});
 				});
 			}
 		}

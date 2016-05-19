@@ -1,34 +1,25 @@
 <div ng-controller="SignInCtrl">
-	<nav class="navbar mainNav">
-	  <div class="container">
-	    <a href="/#/landing" class="navbar-brand title">TypeAnimator</a>
-	    <div id="navbar" class="navbar-collapse collapse">
-	      <ul class="nav navbar-nav">
-	        <li><a href="/#/" class="nav-link">Game</a></li>
-	      </ul>
-	      <ul class="nav navbar-nav navbar-right">
-	        <li>
-	 					<a ng-hide="user" href="/#/signIn" class="nav-link">Sign In</a>
-	 					<a ng-show="user" class="nav-link">{{user}}</a>
-	        </li>
-	      </ul>
-	    </div>  
-	  </div> 
-	</nav>
+	<nav-directive></nav-directive>
 	<div class="container">
 
 	  <form class="form-signin" id="signInForm" ng-hide="signUp || user">
-	    <h2 class="form-signin-heading">Sign in</h2>
-	    <label for="inputEmail" class="sr-only">Email address</label>
-	    <input type="email" ng-model="signInEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-	    <label for="inputPassword" class="sr-only">Password</label>
-	    <input type="password" ng-model="signInPw" id="inputPassword" class="form-control" placeholder="Password" required>
-	    <div class="checkbox">
-	      <label>
-	        <input type="checkbox" value="remember-me"> Remember me
-	      </label>
-	    </div>
-	    <button class="btn btn-lg btn-primary btn-block" ng-click="signIn(signInEmail, signInPw)" type="submit">Sign in</button>
+	  	<div ng-hide="savedUser">
+		    <h2 class="form-signin-heading">Sign in</h2>
+		    <label for="inputEmail" class="sr-only">Email address</label>
+		    <input type="email" ng-model="signInEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+		    <label for="inputPassword" class="sr-only">Password</label>
+		    <input type="password" ng-model="signInPw" id="inputPassword" class="form-control" placeholder="Password" required>
+		    <div class="checkbox">
+		      <label>
+		        <input type="checkbox" value="remember-me"> Remember me
+		      </label>
+		    </div>
+		  </div>
+		  <div ng-show="savedUser">
+		  	<h2>Hello {{savedUser.email}}</h2>
+		  </div>  
+	    <button class="btn btn-lg btn-primary btn-block" ng-click="logIn(signInEmail, signInPw)" type="submit">Sign in</button>
+	    <div ng-show="savedUser">Want to sign in with another user? <a ng-click="clearSaved()">Sign In</a></div>
 	  	<div>Don't have an account? <a ng-click="signUp=true">Sign up</a></div>
 	  </form>
 

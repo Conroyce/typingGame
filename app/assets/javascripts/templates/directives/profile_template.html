@@ -1,41 +1,25 @@
 <div ng-controller="ProfileCtrl">
-	<nav class="navbar mainNav">
-	  <div class="container">
-	    <a href="/#/landing" class="navbar-brand title">TypeAnimator</a>
-	    <div id="navbar" class="navbar-collapse collapse">
-	      <ul class="nav navbar-nav">
-	        <li><a href="/#/" class="nav-link">Game</a></li>
-	      </ul>
-	      <ul class="nav navbar-nav navbar-right">
-	        <li>
-	 					<a ng-hide="user" href="/#/signIn" class="nav-link">Sign In</a>
-	 					<a ng-show="user" class="nav-link">{{user.username}}</a>
-	        </li>
-	        <li ng-show="user">
-	          <a href="/#/signIn" class="nav-link">Sign Out</a>
-	        </li>
-	      </ul>
-	    </div>  
-	  </div> 
-	</nav>
+	<nav-directive></nav-directive>
 
 	<div class="container">
-		<div class="btn-group" data-toggle="buttons">
-		  <label class="btn btn-primary active" ng-click="night=false">
-		    <input type="radio" autocomplete="off" id="day"> Day Theme
-		  </label>
-		  <label class="btn btn-primary" ng-click="night=true">
-		    <input type="radio" autocomplete="off" id="night"> Night Theme
-		  </label>
-		</div>
-		<div class="btn-group" data-toggle="buttons">
-		  <label class="btn btn-primary active" ng-click="showWPM=false">
-		    <input type="radio" autocomplete="off" id="day"> WPM
-		  </label>
-		  <label class="btn btn-primary" ng-click="showWPM=true">
-		    <input type="radio" autocomplete="off" id="night"> Accuracy
-		  </label>
-		</div>
+		<div class="profile-btns">
+			<div class="btn-group" data-toggle="buttons">
+			  <label class="btn btn-primary active" ng-click="toggleTheme()">
+			    <input type="radio" autocomplete="off" id="day"> Day Theme
+			  </label>
+			  <label class="btn btn-primary" ng-click="toggleTheme()">
+			    <input type="radio" autocomplete="off" id="night"> Night Theme
+			  </label>
+			</div>
+			<div class="btn-group" data-toggle="buttons">
+			  <label class="btn btn-primary active" ng-click="showWPM=false">
+			    <input type="radio" autocomplete="off" id="day"> WPM
+			  </label>
+			  <label class="btn btn-primary" ng-click="showWPM=true">
+			    <input type="radio" autocomplete="off" id="night"> Accuracy
+			  </label>
+			</div>
+		</div>	
 
 		<div id="graph-container" ng-class="{day: !night, night: night}">
 			<div id="wpm" ng-hide="showWPM"></div>

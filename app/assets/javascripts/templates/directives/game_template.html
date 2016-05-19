@@ -1,22 +1,4 @@
-<nav class="navbar mainNav">
-  <div class="container">
-    <a href="/#/landing" class="navbar-brand title">TypeAnimator</a>
-    <div id="navbar" class="navbar-collapse">
-      <ul class="nav navbar-nav game-tag">
-        <li><a href="/#/" class="nav-link">Game</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right account-tag">
-        <li>
-          <a ng-hide="user" href="/#/signIn" class="nav-link">Sign In</a>
-          <a ng-show="user" href="/#/profile" class="nav-link">{{user.username}}</a>
-        </li>
-        <li ng-show="user">
-          <a href="/#/signIn" class="nav-link">Sign Out</a>
-        </li>
-      </ul>
-    </div>  
-  </div> 
-</nav>
+<nav-directive></nav-directive>
 <div class="row row-solo">
   <div class="col-xs-2">
   </div>
@@ -89,7 +71,8 @@
 </div> 
 <div class="col-xs-3 recentScores">
   <h3 class="centered">Recent Scores</h3>
-  <h4 class="centered sub-avg">Average: {{pastAvg}} WPM</h4>
+  <h4 class="centered sub-avg" ng-show="pastAvg">Average: {{pastAvg}} WPM</h4>
+  <h4 class="centered sub-avg" ng-hide="pastAvg">No recent scores yet.</h4>
   <ol>
     <div ng-repeat="score in pastScores track by $index">
       <li>{{score}} WPM</li>

@@ -1,7 +1,11 @@
 class GamesController < ApplicationController
   def index
-    @games = Game.all
-    render :json => {:status => "success", :data => @games}
+    @user = User.find(params[:user_id])
+    if @user
+      render :json => {:status => "success", :data => @user.games}
+    else
+      render :json => {:status => "fail", :data => "user not found"}
+    end  
   end
 
   def root

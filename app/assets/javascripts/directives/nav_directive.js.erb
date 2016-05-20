@@ -5,6 +5,7 @@ app.directive("navDirective", ["$timeout", "$interval", "$http", "User", "$locat
 			templateUrl: "<%= asset_path('templates/directives/nav_template.html') %>",
 			link: function(scope, ele, attr) {
 				scope.user = angular.fromJson(localStorage.getItem('user'));
+				console.log("nav ", scope.user);
 
 				scope.signOut = function() {
 					var session = new Session.logout.get(function(res) {

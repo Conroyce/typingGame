@@ -3,9 +3,9 @@ app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$l
 		return {
 			templateUrl: "<%= asset_path('templates/directives/profile_template.html') %>",
 			link: function(scope, ele, attr) {
-				scope.toggleTheme = function() {
+				scope.toggleTheme = function(night) {
 					console.log("toggle", scope.day);
-					if (!scope.night) {
+					if (night) {
 						scope.night = true;
 						$('body').addClass('night');
 					} else {
@@ -130,8 +130,12 @@ app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$l
 
 					// only display if user has had at least 5 games
 					if (data.length >= 5) {
-						graph('#wpm', green, 'score', 'WPM');
-						graph('#accuracy', orange, 'accuracy', 'Accuracy(%)');
+						if (!$('#wpm').has('svg').length) {
+							graph('#wpm', green, 'score', 'WPM');
+						}
+						if (!$('#accuracy').has('svg').length) {
+							graph('#accuracy', orange, 'accuracy', 'Accuracy(%)');
+						}
 					}
 
 					$(function () {

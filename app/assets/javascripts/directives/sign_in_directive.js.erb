@@ -59,7 +59,7 @@ app.directive("signInDirective", ["$timeout", "$interval", "$http", "User", "$lo
     		user.$save(function(resp, responseHeaders) {
     			console.log("inside user ", user);
     			if (resp.status != "fail") {
-    				localStorage.setItem('user', username);
+    				localStorage.setItem('user', angular.toJson(resp.data));
     				$location.path('/');
     			}
     		})

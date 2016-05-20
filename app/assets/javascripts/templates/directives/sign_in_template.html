@@ -31,7 +31,7 @@
 	    <input type="email" id="inputEmail" ng-model="email" class="form-control" placeholder="Email address" required autofocus>
 	    <label for="inputPassword" class="sr-only">Password</label>
 	    <input type="password" id="inputPassword" ng-model="password" class="form-control" placeholder="Password" required>
-	    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="createAcct(username, email, password)">Create</button>
+	    <button id="create" class="btn btn-lg btn-primary btn-block" type="submit" ng-click="createAcct(username, email, password)">Create</button>
 	    <div>Already have an account? <a ng-click="signUp=false">Sign in</a></div>
 	  </form>
 

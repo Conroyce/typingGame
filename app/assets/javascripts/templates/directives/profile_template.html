@@ -2,12 +2,12 @@
 	<nav-directive></nav-directive>
 
 	<div class="container">
-		<div class="profile-btns">
+		<div class="profile-btns" ng-show="data.length >= 5">
 			<div class="btn-group" data-toggle="buttons">
 			  <label class="btn btn-primary active" ng-click="toggleTheme()">
 			    <input type="radio" autocomplete="off" id="day"> Day Theme
 			  </label>
-			  <label class="btn btn-primary" ng-click="toggleTheme()">
+			  <label class="btn btn-primary" ng-click="toggleTheme(true)">
 			    <input type="radio" autocomplete="off" id="night"> Night Theme
 			  </label>
 			</div>
@@ -19,6 +19,7 @@
 			    <input type="radio" autocomplete="off" id="night"> Accuracy
 			  </label>
 			</div>
+			<span class="tip"><strong>tip:</strong> hover over a node to view exact words per minute and accuracy.</span>
 		</div>	
 
 		<div id="graph-container" ng-class="{day: !night, night: night}">
@@ -29,7 +30,9 @@
 			<h2></h2>
 		</div> -->
 	</div>
-	<div class="container" ng-show="data.length < 5">
-		<h2>Not enough games played to display graph.</h2>
+	<div class="container" ng-show="data.length < 5" id="no-graph">
+		<h2 class="center">Oh no!</h2>
+		<h3 class="center">A minimum of 5 completed games is needed to display the graph.<br /> In the meantime, here's Louise.</h3>
+		<iframe src="//giphy.com/embed/xhXb2x70JWEcU" width="480" height="266" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
 	</div>
 </div>

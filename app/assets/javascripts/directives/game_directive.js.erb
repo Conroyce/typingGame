@@ -277,6 +277,7 @@ app.directive("gameDirective", ["$timeout", "$interval", "$http", "images", "tex
         scope.gameOver = true;
         scope.gameDisplay = false;
         scope.resetGameButton = false;
+        scope.gameStarted = false;
         textDisplay(false,false);
         calcWPM(scope.count,scope.time)
         calcAccuracy(scope.count,scope.errors)

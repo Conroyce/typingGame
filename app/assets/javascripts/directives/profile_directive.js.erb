@@ -16,10 +16,25 @@ app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$l
 
 				scope.user = angular.fromJson(localStorage.user);
 				Game.get({user_id:scope.user.id}, function(resp) {
-					resp.data.forEach(function(v) { v.accuracy = parseFloat(v.accuracy); });
+					var avgWpm = [];
+					var avgAcc = [];
+					resp.data.forEach(function(v,i) { 
+						v.accuracy = parseFloat(v.accuracy);
+						if (avgWpm.length) {
+							var prevAvgWpm = avgWpm[i-1] * avgWpm.length;
+							var prevAvgAcc = avgAcc[i-1] * avgAcc.length;
+							avgWpm.push((v.score+prevAvgWpm)/(i+1));
+							avgWpm[i] = parseFloat(avgWpm[i].toFixed(2),10);
+							avgAcc.push((v.accuracy+prevAvgAcc)/(i+1));
+							avgAcc[i] = parseFloat(avgAcc[i].toFixed(2),10);
+						}	else {
+							avgWpm.push(v.score);
+							avgAcc.push(v.accuracy);
+						}	
+					});
 					var data = resp.data;
 					scope.data = data;
-					console.log("Games ", data);
+					console.log("Games ", data, avgWpm, avgAcc);
 
 					var hexToRgb = function(hex) {
 				    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -36,7 +51,6 @@ app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$l
 					    percent = d3.format('%'),
 					    height = 500 - margin.top - margin.bottom;
 
-					// var formatDate = d3.time.format("%d-%b-%y");
 					var color = d3.scale.category20();
 
 					var x = d3.time.scale()
@@ -55,30 +69,35 @@ app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$l
 					    .orient("left");
 
 					var green = "rgb(152,223,138)";
-					var orange = "rgb(255, 127, 14)";
+					var orange = "rgb(255,127,14)";
+					var purple = "#9966ff";
 
-					var graph = function(el,color, type, text) {
+					var graph = function(el,color, type, text, avg) {
 						var line = d3.svg.line()
-						    .x(function(d) { return x(d.id); })
+						    .x(function(d,i) { return x(i+1); })
 						    .y(function(d) { return y(d[type]); });
+
+						var lineAvg = d3.svg.line()
+								.x(function(d,i) { return x(i+1); })
+						    .y(function(d,i) { console.log("y ", avg[i]);return y(avg[i]); });    
 
 						var tip = d3.tip()
 						  .attr('class', 'd3-tip')
 						  .html(function(d) { return '<p><span class="orange">Accuracy: </span>' + d.accuracy + '%</p><span class="green">WPM: </span>' + d.score; })    
+
+						var avgTip = d3.tip()
+							  .attr('class', 'd3-tip')
+							  .html(function(d,i) { return '<p><span class="purple">Avg Accuracy: </span>' + avgAcc[i] + '%</p><span class="purple">Avg WPM: </span>' + avgWpm[i]; })          
 
 						var svg = d3.select(el).append("svg")
 						    .attr("width", width + margin.left + margin.right)
 						    .attr("height", height + margin.top + margin.bottom)
 						  .append("g")
 						    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-						    .call(tip);
+						    .call(tip)
+						    .call(avgTip);
 
-						  // Add the valueline path.
-						  // svg.append("path")
-						  //   .attr("class", "line")
-						  //   .attr("d", valueline(data));
-
-						  x.domain(d3.extent(data, function(d) { return d.id; }));
+						  x.domain(d3.extent(data, function(d,i) { return i+1; }));
 						  y.domain(d3.extent(data, function(d) { return d[type]; }));
 
 						  svg.append("g")
@@ -104,37 +123,52 @@ app.directive("profileDirective", ["$timeout", "$interval", "$http", "User", "$l
 						      .text(text);
 
 						  svg.append("path")
-						      .datum(data)
-						      .attr("class", "line")
-						      .attr("d", line);
+					      .datum(data)
+					      .attr("class", "line")
+					      .attr("d", line);
 
+					    svg.append("path")
+					      .datum(data)
+					      .attr("class", "line")
+					      .attr("d", lineAvg);   
+						   
 						  svg.selectAll('circle')
 						    .data(data)
 						    .enter().append('circle')
-						    .attr('cx', function(d) {
-						      return x(d.id);
+						    .attr('cx', function(d,i) {
+						    	console.log('first x ', i+1);
+						      return x(i+1);
 						    })
 						    .attr('cy', function(d) {
+						    	console.log('first y ', d[type]);
 						      return y(d[type]);
 						    })
 						    .attr('r', 5)
-						    // .attr('data-toggle','tooltip')
-						    // .attr('data-placement','top')
-						    // .attr('title','test')
 						    .attr('class', 'node')
 						    .style('fill', color)
 						    .on('mouseover', tip.show)
 						    .on('mouseout', tip.hide);
 
+								svg.selectAll("rect")
+									.data(data)
+									.enter().append('rect')
+									.attr("x", function(d,i) { return x(i+1)-5; })
+									.attr("y", function(d,i) { return y(avg[i])-5; })
+									.attr('class', 'rect')
+									.attr("width", 9)
+									.attr("height", 9)
+									.style('fill', purple)
+									.on('mouseover', avgTip.show)
+						    	.on('mouseout', avgTip.hide);;
 					};
 
 					// only display if user has had at least 5 games
 					if (data.length >= 5) {
 						if (!$('#wpm').has('svg').length) {
-							graph('#wpm', green, 'score', 'WPM');
+							graph('#wpm', green, 'score', 'WPM',avgWpm);
 						}
 						if (!$('#accuracy').has('svg').length) {
-							graph('#accuracy', orange, 'accuracy', 'Accuracy(%)');
+							graph('#accuracy', orange, 'accuracy', 'Accuracy(%)',avgAcc);
 						}
 					}
 

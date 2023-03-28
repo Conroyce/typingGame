@@ -46,7 +46,7 @@ GEM
     d3-rails (3.5.5)
       railties (>= 3.1)
     erubis (2.7.0)
-    execjs (2.3.0)
+    execjs (2.8.1)
     hike (1.2.3)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
@@ -129,7 +129,7 @@ GEM
       railties (~> 4.1)
     tzinfo (1.2.6)
       thread_safe (~> 0.1)
-    uglifier (2.7.0)
+    uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
 
